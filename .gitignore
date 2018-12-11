@@ -1,0 +1,12 @@
+# composer files
+vendor
+
+# IDE caches
+/.idea
+/.vscode
+
+# System files
+.DS_Store
+
+# config.php
+examples/config.php
