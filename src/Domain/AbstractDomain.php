@@ -1,6 +1,8 @@
 <?php
 
-namespace XFApi;
+namespace XFApi\Domain;
+
+use XFApi\Client;
 
 /**
  * Class AbstractEndpoint

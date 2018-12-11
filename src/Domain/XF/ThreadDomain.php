@@ -1,11 +1,11 @@
 <?php
 
-namespace XFApi\XF;
+namespace XFApi\Domain\XF;
 
-use XFApi\AbstractDomain;
+use XFApi\Domain\AbstractDomain;
 use XFApi\Dto\XF\ThreadDto;
 
-class Thread extends AbstractDomain
+class ThreadDomain extends AbstractDomain
 {
     public function get($threadId)
     {

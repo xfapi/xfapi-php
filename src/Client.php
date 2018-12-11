@@ -3,14 +3,15 @@
 namespace XFApi;
 
 use GuzzleHttp\Client as GuzzleClient;
+use XFApi\Container\AbstractContainer;
+use XFApi\Container\XFContainer;
 use XFApi\Exception\XFApiException;
-use XFApi\XF\Thread;
 
 /**
  * Class Client
  * @package XFApi
  *
- * @property Thread $thread
+ * @property XFContainer $xf
  */
 class Client
 {
@@ -21,7 +22,7 @@ class Client
     protected $apiUserId;
     protected $httpClient;
 
-    protected $_thread;
+    protected $_xf;
 
     /**
      * Client constructor.
@@ -176,21 +177,18 @@ class Client
         }
     }
 
-    /**
-     * @return Thread
-     */
-    public function getThread()
+    public function getXf()
     {
-        if (!$this->_thread) {
-            $this->_thread = new Thread($this);
+        if (!$this->_xf) {
+            $this->_xf = new XFContainer($this);
         }
 
-        return $this->_thread;
+        return $this->_xf;
     }
 
     /**
      * @param string $name
-     * @return AbstractDomain
+     * @return AbstractContainer
      * @throws XFApiException
      */
     public function __get($name)
@@ -200,6 +198,6 @@ class Client
             return $this->$method();
         }
 
-        throw new XFApiException('Unable to find domain ' . $name);
+        throw new XFApiException('Unable to find container ' . $name);
     }
 }
