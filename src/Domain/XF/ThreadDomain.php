@@ -4,22 +4,34 @@ namespace XFApi\Domain\XF;
 
 use XFApi\Domain\AbstractDomain;
 use XFApi\Dto\XF\ThreadDto;
+use XFApi\Dto\XF\ThreadsDto;
 
 class ThreadDomain extends AbstractDomain
 {
-    public function get($threadId)
+    public function getThreads($page = 1)
     {
-        $uri = $this->getUri('', ['thread_id' => $threadId]);
+        $uri = $this->getUri('');
+        $threads = $this->requestGet($uri, ['page' => $page]);
+
+        return $this->getPaginatedDto(ThreadsDto::class, $threads['threads'], $threads['pagination']);
+    }
+
+    public function getThread($threadId)
+    {
+        $uri = $this->getUri(null, ['thread_id' => $threadId]);
         $thread = $this->requestGet($uri);
-        return $this->getDto($thread['thread']);
+        return $this->getDto(ThreadDto::class, $thread['thread']);
     }
 
-    protected function getDto(array $attributes)
+    public function getThreadPosts($threadId)
     {
-        return new ThreadDto($attributes);
+        $uri = $this->getUri('posts', ['thread_id' => $threadId]);
+        $posts = $this->requestGet($uri);
+
+        dump($posts);die;
     }
 
-    protected function getUri($uri, array $params = [])
+    protected function getUri($uri = null, array $params = [])
     {
         $return = 'threads';
         if (isset($params['thread_id'])) {
@@ -33,4 +45,8 @@ class ThreadDomain extends AbstractDomain
         return $return;
     }
 
+    protected function getDtoClass()
+    {
+        return ThreadDto::class;
+    }
 }

@@ -3,6 +3,10 @@
 namespace XFApi\Domain;
 
 use XFApi\Client;
+use XFApi\Dto\AbstractItemDto;
+use XFApi\Dto\AbstractPaginatedDto;
+use XFApi\Dto\PaginationDto;
+use XFApi\Exception\XFApiException;
 
 /**
  * Class AbstractEndpoint
@@ -35,21 +39,95 @@ abstract class AbstractDomain
         $this->apiClient = $apiClient;
     }
 
+    /**
+     * @param $endpoint
+     * @param array $params
+     * @param array $headers
+     *
+     * @return array
+     *
+     * @throws XFApiException
+     */
     public function requestGet($endpoint, array $params = [], array $headers = [])
     {
         return $this->getApiClient()->requestGet($endpoint, $params, $headers);
     }
 
+    /**
+     * @param $endpoint
+     * @param array $data
+     * @param array $headers
+     *
+     * @return array
+     *
+     * @throws XFApiException
+     */
     public function requestPost($endpoint, array $data = [], array $headers = [])
     {
         return $this->getApiClient()->requestPost($endpoint, $data, $headers);
     }
 
+    /**
+     * @param $method
+     * @param $uri
+     * @param array $params
+     * @param array $data
+     * @param array $headers
+     *
+     * @return array
+     *
+     * @throws XFApiException
+     */
     public function request($method, $uri, array $params = [], array $data = [], array $headers = [])
     {
         return $this->getApiClient()->request($method, $uri, $params, $data, $headers);
     }
 
+    /**
+     * @param array $attributes
+     * @return PaginationDto
+     */
+    protected function getPaginationDto(array $attributes)
+    {
+        return $this->getDto(PaginationDto::class, $attributes);
+    }
+
+    /**
+     * @param $class
+     * @param array $attributes
+     * @return AbstractItemDto
+     */
+    protected function getDto($class, array $attributes)
+    {
+        return new $class($attributes);
+    }
+
+    /**
+     * @param $class
+     * @param array $items
+     * @return AbstractItemDto[]
+     */
+    protected function getDtos($class, array $items)
+    {
+        $return = [];
+        foreach ($items as $key => $attributes) {
+            $return[$key] = $this->getDto($class, $attributes);
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param $class
+     * @param array $items
+     * @param array $pagination
+     *
+     * @return AbstractPaginatedDto
+     */
+    protected function getPaginatedDto($class, array $items, array $pagination)
+    {
+        return new $class($items, $pagination);
+    }
+
     protected abstract function getUri($uri, array $params);
-    protected abstract function getDto(array $attributes);
 }

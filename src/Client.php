@@ -110,6 +110,16 @@ class Client
             $endpoint = '/' . $endpoint;
         }
 
+        if (!empty($params)) {
+            $paramsStr = http_build_query($params);
+            if (strpos($endpoint, '?') === false) {
+                $endpoint .= '?';
+            } else {
+                $endpoint .= '&';
+            }
+            $endpoint .= $paramsStr;
+        }
+
         return $this->getApiUrl() . $endpoint;
     }
 

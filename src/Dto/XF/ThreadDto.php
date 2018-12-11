@@ -2,7 +2,7 @@
 
 namespace XFApi\Dto\XF;
 
-use XFApi\Dto\AbstractDto;
+use XFApi\Dto\AbstractItemDto;
 
 /**
  * Class ThreadDto
@@ -37,7 +37,7 @@ use XFApi\Dto\AbstractDto;
  * @property-read boolean $can_hard_delete
  * @property-read boolean $can_view_attachments
  */
-class ThreadDto extends AbstractDto
+class ThreadDto extends AbstractItemDto
 {
 
 }
