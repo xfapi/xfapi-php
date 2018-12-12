@@ -23,13 +23,13 @@ class ThreadDomain extends AbstractDomain
         return $this->getDto(ThreadDto::class, $thread['thread']);
     }
 
-    public function getThreadPosts($threadId)
-    {
-        $uri = $this->getUri('posts', ['thread_id' => $threadId]);
-        $posts = $this->requestGet($uri);
-
-        dump($posts);die;
-    }
+//    public function getThreadPosts($threadId)
+//    {
+//        $uri = $this->getUri('posts', ['thread_id' => $threadId]);
+//        $posts = $this->requestGet($uri);
+//
+//        dump($posts);die;
+//    }
 
     protected function getUri($uri = null, array $params = [])
     {
