@@ -123,14 +123,26 @@ class Client
         return $this->getApiUrl() . $endpoint;
     }
 
-    public function requestGet($endpoint, array $params = [], array $headers = [])
+    public function get($endpoint, array $params = [], array $headers = [])
     {
         return $this->request('GET', $endpoint, $params, [], $headers);
     }
 
-    public function requestPost($endpoint, array $data = [], array $headers = [])
+    public function post($endpoint, array $data = [], array $headers = [])
     {
         return $this->request('POST', $endpoint, [], $data, $headers);
+    }
+
+    public function put($endpoint, array $data = [], array $headers = []) {
+        return $this->request('POST', $endpoint, [], $data, $headers);
+    }
+
+    public function patch($endpoint, array $data = [], array $headers = []) {
+        return $this->request('POST', $endpoint, [], $data, $headers);
+    }
+
+    public function delete($endpoint, array $data = [], array $headers = []) {
+        return $this->request('DELETE', $endpoint, [], $data, $headers);
     }
 
     /**
