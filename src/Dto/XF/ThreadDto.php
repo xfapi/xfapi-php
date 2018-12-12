@@ -14,7 +14,6 @@ use XFApi\Dto\AbstractItemDto;
  * @property-read integer $reply_count
  * @property-read integer $view_count
  * @property-read integer $user_id
- * @property-read string $username
  * @property-read integer $post_date
  * @property-read boolean $sticky
  * @property-read string $discussion_state
@@ -26,10 +25,17 @@ use XFApi\Dto\AbstractItemDto;
  * @property-read integer $last_post_user_id
  * @property-read integer $first_post_reaction_score
  * @property-read integer $prefix_id
+ *
  * @property-read array $Forum
  * @property-read array $User
+ *
+ * @property-read string $username
+ * @property-read boolean $is_watching
+ * @property-read integer $visitor_post_count
  * @property-read array $custom_fields
  * @property-read array $tags
+ * @property-read string $prefix
+ *
  * @property-read boolean $can_edit
  * @property-read boolean $can_edit_tags
  * @property-read boolean $can_reply
