@@ -104,6 +104,11 @@ class Client
         $this->apiKey = $apiKey;
     }
 
+    /**
+     * @param $endpoint
+     * @param array $params
+     * @return string
+     */
     public function getFullUrl($endpoint, array $params = [])
     {
         if (substr($endpoint, 0, 1) !== '/') {
@@ -123,26 +128,66 @@ class Client
         return $this->getApiUrl() . $endpoint;
     }
 
+    /**
+     * @param $endpoint
+     * @param array $params
+     * @param array $headers
+     * @return array
+     * @throws XFApiException
+     */
     public function get($endpoint, array $params = [], array $headers = [])
     {
         return $this->request('GET', $endpoint, $params, [], $headers);
     }
 
-    public function post($endpoint, array $data = [], array $headers = [])
+    /**
+     * @param $endpoint
+     * @param array $data
+     * @param array $headers
+     * @return array
+     * @throws XFApiException
+     */
+    public function post($endpoint, array $params = [], array $data = [], array $headers = [])
     {
-        return $this->request('POST', $endpoint, [], $data, $headers);
+        return $this->request('POST', $endpoint, $params, $data, $headers);
     }
 
-    public function put($endpoint, array $data = [], array $headers = []) {
-        return $this->request('POST', $endpoint, [], $data, $headers);
+    /**
+     * @param $endpoint
+     * @param array $params
+     * @param array $data
+     * @param array $headers
+     * @return array
+     * @throws XFApiException
+     */
+    public function put($endpoint, array $params = [], array $data = [], array $headers = [])
+    {
+        return $this->request('POST', $endpoint, $params, $data, $headers);
     }
 
-    public function patch($endpoint, array $data = [], array $headers = []) {
-        return $this->request('POST', $endpoint, [], $data, $headers);
+    /**
+     * @param $endpoint
+     * @param array $params
+     * @param array $data
+     * @param array $headers
+     * @return array
+     * @throws XFApiException
+     */
+    public function patch($endpoint, array $params = [], array $data = [], array $headers = [])
+    {
+        return $this->request('POST', $endpoint, $params, $data, $headers);
     }
 
-    public function delete($endpoint, array $data = [], array $headers = []) {
-        return $this->request('DELETE', $endpoint, [], $data, $headers);
+    /**
+     * @param $endpoint
+     * @param array $params
+     * @param array $headers
+     * @return array
+     * @throws XFApiException
+     */
+    public function delete($endpoint, array $params = [], array $headers = [])
+    {
+        return $this->request('DELETE', $endpoint, $params, [], $headers);
     }
 
     /**
@@ -199,6 +244,9 @@ class Client
         }
     }
 
+    /**
+     * @return XFContainer
+     */
     public function getXf()
     {
         if (!$this->_xf) {
