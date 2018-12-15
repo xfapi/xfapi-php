@@ -9,7 +9,8 @@ use XFApi\Domain\XF\ProductDomain;
  * Class XF
  * @package XFApi\Container
  *
- * @property-read ProductDomain $thread
+ * @property-read ThreadDomain $thread
+ * @property-read ProductDomain $product
  */
 class XFContainer extends AbstractContainer
 {
