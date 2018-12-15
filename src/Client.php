@@ -139,14 +139,16 @@ class Client
     {
         return $this->request('GET', $endpoint, $params, [], $headers);
     }
-
-    /**
-     * @param $endpoint
-     * @param array $data
-     * @param array $headers
-     * @return array
-     * @throws XFApiException
-     */
+	
+	/**
+	 * @param $endpoint
+	 * @param array $params
+	 * @param array $data
+	 * @param array $headers
+	 *
+	 * @return array
+	 * @throws XFApiException
+	 */
     public function post($endpoint, array $params = [], array $data = [], array $headers = [])
     {
         return $this->request('POST', $endpoint, $params, $data, $headers);
@@ -237,7 +239,8 @@ class Client
 
         switch ($request->getStatusCode()) {
             case 200:
-                return json_decode($request->getBody()->getContents(), true);
+                /** @noinspection PhpComposerExtensionStubsInspection */
+				return json_decode($request->getBody()->getContents(), true);
             default:
                 // todo: implement exceptions for different possible error codes.
                 throw new XFApiException('HTTP Error code: ' . $request->getStatusCode());

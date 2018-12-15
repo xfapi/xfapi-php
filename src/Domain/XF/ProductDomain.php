@@ -22,7 +22,7 @@ class ProductDomain extends AbstractDomain
 	public function getProducts($page = 1)
 	{
 		$uri = $this->getUri('');
-		$products = $this->requestGet($uri, ['page' => $page]);
+		$products = $this->get($uri, ['page' => $page]);
 
 		return $this->getPaginatedDto(ProductsDto::class, $products['products'], $products['pagination']);
 	}
@@ -36,7 +36,7 @@ class ProductDomain extends AbstractDomain
 	public function getProduct($productId)
 	{
 		$uri = $this->getUri(null, ['product_id' => $productId]);
-		$product = $this->requestGet($uri);
+		$product = $this->get($uri);
 		return $this->getDto(ProductDto::class, $product['product']);
 	}
 	
@@ -79,14 +79,16 @@ class ProductDomain extends AbstractDomain
 	 *
 	 * @throws \XFApi\Exception\XFApiException
 	 */
-	public function requestGet($endpoint, array $params = [], array $headers = [])
+	public function get($endpoint, array $params = [], array $headers = [])
 	{
 		$boardUrl = 'N/A';
 		$versionId = 0;
 		
 		if (class_exists('XF', false))
 		{
+			/** @noinspection PhpUndefinedClassInspection */
 			$boardUrl = \XF::options()->boardUrl;
+			/** @noinspection PhpUndefinedClassInspection */
 			$versionId = \XF::$versionId;
 		}
 		
@@ -97,6 +99,6 @@ class ProductDomain extends AbstractDomain
 			'X-DragonByte-SoftwareVersion' => $versionId
 		], $headers);
 		
-		return parent::requestGet($endpoint, $params, $headers);
+		return parent::get($endpoint, $params, $headers);
 	}
 }
