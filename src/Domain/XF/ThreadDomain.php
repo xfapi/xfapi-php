@@ -8,18 +8,30 @@ use XFApi\Dto\XF\ThreadsDto;
 
 class ThreadDomain extends AbstractDomain
 {
+	/**
+	 * @param int $page
+	 *
+	 * @return \XFApi\Dto\AbstractPaginatedDto
+	 * @throws \XFApi\Exception\XFApiException
+	 */
     public function getThreads($page = 1)
     {
         $uri = $this->getUri('');
-        $threads = $this->requestGet($uri, ['page' => $page]);
+        $threads = $this->get($uri, ['page' => $page]);
 
         return $this->getPaginatedDto(ThreadsDto::class, $threads['threads'], $threads['pagination']);
     }
-
+	
+	/**
+	 * @param $threadId
+	 *
+	 * @return \XFApi\Dto\AbstractItemDto
+	 * @throws \XFApi\Exception\XFApiException
+	 */
     public function getThread($threadId)
     {
         $uri = $this->getUri(null, ['thread_id' => $threadId]);
-        $thread = $this->requestGet($uri);
+        $thread = $this->get($uri);
         return $this->getDto(ThreadDto::class, $thread['thread']);
     }
 

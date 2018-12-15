@@ -75,7 +75,7 @@ abstract class AbstractDomain
      * @return array
      * @throws XFApiException
      */
-    public function put($endpoint, array $params = [], array $data = [], array $headers)
+    public function put($endpoint, array $params = [], array $data = [], array $headers = [])
     {
         return $this->getApiClient()->put($endpoint, $params, $data, $headers);
     }
@@ -89,7 +89,7 @@ abstract class AbstractDomain
      * @return array
      * @throws XFApiException
      */
-    public function patch($endpoint, array $params = [], array $data = [], array $headers)
+    public function patch($endpoint, array $params = [], array $data = [], array $headers = [])
     {
         return $this->getApiClient()->patch($endpoint, $params, $data, $headers);
     }
@@ -102,7 +102,7 @@ abstract class AbstractDomain
      * @return array
      * @throws XFApiException
      */
-    public function delete($endpoint, array $data = [], array $headers)
+    public function delete($endpoint, array $data = [], array $headers = [])
     {
         return $this->getApiClient()->delete($endpoint, $data, $headers);
     }
@@ -122,11 +122,12 @@ abstract class AbstractDomain
     {
         return $this->getApiClient()->request($method, $endpoint, $params, $data, $headers);
     }
-
-    /**
-     * @param array $attributes
-     * @return PaginationDto
-     */
+	
+	/**
+	 * @param array $attributes
+	 *
+	 * @return AbstractItemDto
+	 */
     protected function getPaginationDto(array $attributes)
     {
         return $this->getDto(PaginationDto::class, $attributes);
