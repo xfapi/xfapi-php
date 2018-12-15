@@ -6,6 +6,10 @@ class AbstractItemDto extends AbstractDto
 {
     protected $_attributes = [];
 
+    protected $_relations = [];
+
+    protected $_relationCache = [];
+
     /**
      * AbstractItemDto constructor.
      * @param array $attributes
@@ -55,6 +59,18 @@ EOF;
      */
     public function __get($name)
     {
+        if (isset($this->_relations[$name])) {
+            if (isset($this->_attributes[$name])) {
+                if (!isset($this->_relationCache[$name])) {
+                    $this->_relationCache[$name] = new $this->_relations[$name]($this->_attributes[$name]);
+                }
+
+                return $this->_relationCache[$name];
+            } else {
+                return null;
+            }
+        }
+
         if (isset($this->_attributes[$name])) {
             return $this->_attributes[$name];
         }
