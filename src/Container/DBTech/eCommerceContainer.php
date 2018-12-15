@@ -13,17 +13,17 @@ use XFApi\Domain\DBTech\eCommerce\ProductDomain;
  */
 class eCommerceContainer extends AbstractContainer
 {
-	protected $_product;
-	
-	/**
-	 * @return ProductDomain
-	 */
-	public function getProduct()
-	{
-		if (!$this->_product) {
-			$this->_product = new ProductDomain($this->getApiClient());
-		}
-		
-		return $this->_product;
-	}
+    protected $_product;
+    
+    /**
+     * @return ProductDomain
+     */
+    public function getProduct()
+    {
+        if (!$this->_product) {
+            $this->_product = new ProductDomain($this->getApiClient());
+        }
+        
+        return $this->_product;
+    }
 }

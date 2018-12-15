@@ -122,12 +122,12 @@ abstract class AbstractDomain
     {
         return $this->getApiClient()->request($method, $endpoint, $params, $data, $headers);
     }
-	
-	/**
-	 * @param array $attributes
-	 *
-	 * @return AbstractItemDto
-	 */
+    
+    /**
+     * @param array $attributes
+     *
+     * @return AbstractItemDto
+     */
     protected function getPaginationDto(array $attributes)
     {
         return $this->getDto(PaginationDto::class, $attributes);
