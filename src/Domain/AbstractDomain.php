@@ -45,12 +45,53 @@ abstract class AbstractDomain
      * @param array $headers
      *
      * @return array
-     *
      * @throws XFApiException
      */
-    public function requestGet($endpoint, array $params = [], array $headers = [])
+    public function get($endpoint, array $params = [], array $headers = [])
     {
-        return $this->getApiClient()->requestGet($endpoint, $params, $headers);
+        return $this->getApiClient()->get($endpoint, $params, $headers);
+    }
+
+    /**
+     * @param $endpoint
+     * @param array $params
+     * @param array $data
+     * @param array $headers
+     *
+     * @return array
+     * @throws XFApiException
+     */
+    public function post($endpoint, array $params = [], array $data = [], array $headers = [])
+    {
+        return $this->getApiClient()->post($endpoint, $params, $data, $headers);
+    }
+
+    /**
+     * @param $endpoint
+     * @param array $params
+     * @param array $data
+     * @param array $headers
+     *
+     * @return array
+     * @throws XFApiException
+     */
+    public function put($endpoint, array $params = [], array $data = [], array $headers)
+    {
+        return $this->getApiClient()->put($endpoint, $params, $data, $headers);
+    }
+
+    /**
+     * @param $endpoint
+     * @param array $params
+     * @param array $data
+     * @param array $headers
+     *
+     * @return array
+     * @throws XFApiException
+     */
+    public function patch($endpoint, array $params = [], array $data = [], array $headers)
+    {
+        return $this->getApiClient()->patch($endpoint, $params, $data, $headers);
     }
 
     /**
@@ -59,17 +100,16 @@ abstract class AbstractDomain
      * @param array $headers
      *
      * @return array
-     *
      * @throws XFApiException
      */
-    public function requestPost($endpoint, array $data = [], array $headers = [])
+    public function delete($endpoint, array $data = [], array $headers)
     {
-        return $this->getApiClient()->requestPost($endpoint, $data, $headers);
+        return $this->getApiClient()->delete($endpoint, $data, $headers);
     }
 
     /**
      * @param $method
-     * @param $uri
+     * @param $endpoint
      * @param array $params
      * @param array $data
      * @param array $headers
@@ -78,9 +118,9 @@ abstract class AbstractDomain
      *
      * @throws XFApiException
      */
-    public function request($method, $uri, array $params = [], array $data = [], array $headers = [])
+    public function request($method, $endpoint, array $params = [], array $data = [], array $headers = [])
     {
-        return $this->getApiClient()->request($method, $uri, $params, $data, $headers);
+        return $this->getApiClient()->request($method, $endpoint, $params, $data, $headers);
     }
 
     /**
