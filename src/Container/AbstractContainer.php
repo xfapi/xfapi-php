@@ -18,6 +18,8 @@ abstract class AbstractContainer
 
     protected $_domains;
 
+    protected $_domainCache = [];
+
     public function __construct(Client $apiClient)
     {
         $this->setApiClient($apiClient);
@@ -47,8 +49,12 @@ abstract class AbstractContainer
     public function __get($name)
     {
         if(isset($this->_domains[$name])) {
-            $class = $this->_domains[$name];
-            return new $class($this->getApiClient());
+            if(!isset($this->_domainCache[$name])) {
+                $class = $this->_domains[$name];
+                $this->_domainCache[$name] = new $class($this->getApiClient());
+            }
+
+            return $this->_domainCache[$name];
         }
 
         $method = 'get' . ucfirst($name);
