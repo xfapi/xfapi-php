@@ -16,6 +16,8 @@ abstract class AbstractContainer
 {
     protected $apiClient;
 
+    protected $_domains;
+
     public function __construct(Client $apiClient)
     {
         $this->setApiClient($apiClient);
@@ -44,6 +46,11 @@ abstract class AbstractContainer
      */
     public function __get($name)
     {
+        if(isset($this->_domains[$name])) {
+            $class = $this->_domains[$name];
+            return new $class($this->getApiClient());
+        }
+
         $method = 'get' . ucfirst($name);
         if (method_exists($this, $method)) {
             return $this->$method();
