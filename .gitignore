@@ -9,4 +9,4 @@ vendor
 .DS_Store
 
 # config.php
-examples/config.php
+config.php
