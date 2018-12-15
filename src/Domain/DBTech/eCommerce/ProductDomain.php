@@ -1,15 +1,15 @@
 <?php
 
-namespace XFApi\Domain\XF;
+namespace XFApi\Domain\DBTech\eCommerce;
 
 use XFApi\Domain\AbstractDomain;
-use XFApi\Dto\XF\ProductDto;
-use XFApi\Dto\XF\ProductsDto;
+use XFApi\Dto\DBTech\eCommerce\ProductDto;
+use XFApi\Dto\DBTech\eCommerce\ProductsDto;
 
 /**
  * Class ProductDomain
  *
- * @package XFApi\Domain\XF
+ * @package XFApi\Domain\DBTech\eCommerce
  */
 class ProductDomain extends AbstractDomain
 {

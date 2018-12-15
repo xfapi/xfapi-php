@@ -2,7 +2,7 @@
 
 require_once './lib.php';
 
-$productsApi = $client->xf->product;
+$productsApi = $client->dbtech_ecommerce->product;
 
 $products = $productsApi->getProducts();
 $product = $productsApi->getProduct(1);

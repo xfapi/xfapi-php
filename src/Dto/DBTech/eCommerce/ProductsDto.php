@@ -1,12 +1,12 @@
 <?php
 
-namespace XFApi\Dto\XF;
+namespace XFApi\Dto\DBTech\eCommerce;
 
 use XFApi\Dto\AbstractPaginatedDto;
 
 /**
  * Class ProductsDto
- * @package XFApi\Dto\XF
+ * @package XFApi\Dto\DBTech\eCommerce
  *
  * @property-read ProductDto[] $threads
  */

@@ -1,12 +1,12 @@
 <?php
 
-namespace XFApi\Dto\XF;
+namespace XFApi\Dto\DBTech\eCommerce;
 
 use XFApi\Dto\AbstractItemDto;
 
 /**
  * Class ProductDto
- * @package XFApi\Dto\XF
+ * @package XFApi\Dto\DBTech\eCommerce
  *
  * @property-read integer product_id
  * @property-read integer branding_free
