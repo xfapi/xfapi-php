@@ -14,6 +14,7 @@ use XFApi\Exception\XFApiException;
  * @package XFApi
  *
  * @property XFContainer $xf
+ * @property XFRMContainer $xfrm
  * @property DBTecheCommeceContainer $dbtech_ecommerce
  */
 class Client
@@ -27,6 +28,7 @@ class Client
 
     protected $_container = [
         'xf' => XFContainer::class,
+        'xfrm' => XFRMContainer::class,
         'dbtech_ecommerce' => DBTecheCommeceContainer::class
     ];
 
