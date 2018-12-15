@@ -2,7 +2,7 @@
 
 require_once './AbstractTest.php';
 
-final class ThreadTest extends AbstractTest
+final class XFThreadTest extends AbstractTest
 {
     /**
      * @var \XFApi\Domain\XF\ThreadDomain

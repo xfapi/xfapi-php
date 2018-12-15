@@ -1,6 +1,6 @@
 <?php
 
-require_once './lib.php';
+require_once '../lib.php';
 
 $threadsApi = $client->xf->thread;
 
