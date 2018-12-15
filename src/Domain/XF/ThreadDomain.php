@@ -11,7 +11,7 @@ class ThreadDomain extends AbstractDomain
     public function getThreads($page = 1)
     {
         $uri = $this->getUri('');
-        $threads = $this->requestGet($uri, ['page' => $page]);
+        $threads = $this->get($uri, ['page' => $page]);
 
         return $this->getPaginatedDto(ThreadsDto::class, $threads['threads'], $threads['pagination']);
     }
@@ -19,7 +19,7 @@ class ThreadDomain extends AbstractDomain
     public function getThread($threadId)
     {
         $uri = $this->getUri(null, ['thread_id' => $threadId]);
-        $thread = $this->requestGet($uri);
+        $thread = $this->get($uri);
         return $this->getDto(ThreadDto::class, $thread['thread']);
     }
 
