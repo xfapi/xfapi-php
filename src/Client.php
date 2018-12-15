@@ -4,7 +4,9 @@ namespace XFApi;
 
 use GuzzleHttp\Client as GuzzleClient;
 use XFApi\Container\AbstractContainer;
+use XFApi\Container\DBTech\eCommerceContainer as DBTecheCommeceContainer;
 use XFApi\Container\XFContainer;
+use XFApi\Container\XFRMContainer;
 use XFApi\Exception\XFApiException;
 
 /**
@@ -12,7 +14,7 @@ use XFApi\Exception\XFApiException;
  * @package XFApi
  *
  * @property XFContainer $xf
- * @property Container\DBTech\eCommerceContainer $dbtech_ecommerce
+ * @property DBTecheCommeceContainer $dbtech_ecommerce
  */
 class Client
 {
@@ -22,9 +24,13 @@ class Client
     protected $apiKey;
     protected $apiUserId;
     protected $httpClient;
-    
-    protected $_xf;
-    protected $_dbtech_ecommerce;
+
+    protected $_container = [
+        'xf' => XFContainer::class,
+        'dbtech_ecommerce' => DBTecheCommeceContainer::class
+    ];
+
+    protected $_containerCache = [];
 
     /**
      * Client constructor.
@@ -141,7 +147,7 @@ class Client
     {
         return $this->request('GET', $endpoint, $params, [], $headers);
     }
-    
+
     /**
      * @param $endpoint
      * @param array $params
@@ -212,7 +218,7 @@ class Client
                 ' (PHP ' . phpversion() . ')',
             'Accept-Charset' => 'utf-8',
         ]);
-    
+
         $userId = $this->getApiUserId();
         if ($userId) {
             $headers['XF-Api-User'] = $userId;
@@ -249,30 +255,6 @@ class Client
                 throw new XFApiException('HTTP Error code: ' . $request->getStatusCode());
         }
     }
-    
-    /**
-     * @return XFContainer
-     */
-    public function getXf()
-    {
-        if (!$this->_xf) {
-            $this->_xf = new XFContainer($this);
-        }
-        
-        return $this->_xf;
-    }
-    
-    /**
-     * @return Container\DBTech\eCommerceContainer
-     */
-    public function getDbtechEcommerce()
-    {
-        if (!$this->_dbtech_ecommerce) {
-            $this->_dbtech_ecommerce = new Container\DBTech\eCommerceContainer($this);
-        }
-        
-        return $this->_dbtech_ecommerce;
-    }
 
     /**
      * @param string $name
@@ -281,6 +263,15 @@ class Client
      */
     public function __get($name)
     {
+        if (isset($this->_container[$name])) {
+            if (!isset($this->_containerCache[$name])) {
+                $class = $this->_container[$name];
+                $this->_containerCache[$name] = new $class($this);
+            }
+
+            return $this->_containerCache[$name];
+        }
+
         $method = 'get' . $this->camelCase($name);
         if (method_exists($this, $method)) {
             return $this->$method();
@@ -288,7 +279,7 @@ class Client
 
         throw new XFApiException('Unable to find container ' . $name);
     }
-    
+
     protected function camelCase($string, $glue = '_')
     {
         return str_replace(' ', '', ucwords(str_replace($glue, ' ', $string)));
