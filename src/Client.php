@@ -210,8 +210,9 @@ class Client
                 ' (PHP ' . phpversion() . ')',
             'Accept-Charset' => 'utf-8',
         ]);
-
-        if ($userId = $this->getApiUserId()) {
+	
+		$userId = $this->getApiUserId();
+        if ($userId) {
             $headers['XF-Api-User'] = $userId;
         }
 
