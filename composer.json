@@ -3,6 +3,8 @@
     "description": "A PHP library for XenForo's REST API",
     "type": "library",
     "require": {
+        "php": ">=5.6.0",
+        "ext-json": "*",
         "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {

@@ -14,7 +14,8 @@ abstract class AbstractTest extends TestCase
         $this->client = new \XFApi\Client($config['xfApiUrl'], $config['xfApiKey']);
     }
 
-    protected function endpoint($endpoint, $namespace = 'xf') {
+    protected function endpoint($endpoint, $namespace = 'xf')
+    {
         return $this->client->$namespace->$endpoint;
     }
 }

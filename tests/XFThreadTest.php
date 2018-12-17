@@ -20,12 +20,21 @@ final class XFThreadTest extends AbstractTest
         $threads = $this->api->getThreads();
         $class = get_class($threads);
 
-        $this->assertInstanceOf(\XFApi\Dto\AbstractDto::class, $threads,
-            "{$class} not instance of " . \XFApi\Dto\AbstractDto::class);
-        $this->assertInstanceOf(\XFApi\Dto\AbstractPaginatedDto::class, $threads,
-            "{$class} not instance of " . \XFApi\Dto\AbstractPaginatedDto::class);
-        $this->assertInstanceOf(\XFApi\Dto\XF\ThreadsDto::class, $threads,
-            "{$class} not instance of " . \XFApi\Dto\XF\ThreadsDto::class);
+        $this->assertInstanceOf(
+            \XFApi\Dto\AbstractDto::class,
+            $threads,
+            "{$class} not instance of " . \XFApi\Dto\AbstractDto::class
+        );
+        $this->assertInstanceOf(
+            \XFApi\Dto\AbstractPaginatedDto::class,
+            $threads,
+            "{$class} not instance of " . \XFApi\Dto\AbstractPaginatedDto::class
+        );
+        $this->assertInstanceOf(
+            \XFApi\Dto\XF\ThreadsDto::class,
+            $threads,
+            "{$class} not instance of " . \XFApi\Dto\XF\ThreadsDto::class
+        );
 
         $invalidPage = $this->api->getThreads(PHP_INT_MAX);
         $this->assertFalse($invalidPage->valid(), "Invalid page reported as valid.");
@@ -42,12 +51,21 @@ final class XFThreadTest extends AbstractTest
         $thread = $this->api->getThread(1);
         $class = get_class($thread);
 
-        $this->assertInstanceOf(\XFApi\Dto\AbstractDto::class, $thread,
-            "{$class} not instance of " . \XFApi\Dto\AbstractDto::class);
-        $this->assertInstanceOf(\XFApi\Dto\AbstractItemDto::class, $thread,
-            "{$class} not instance of " . \XFApi\Dto\AbstractPaginatedDto::class);
-        $this->assertInstanceOf(\XFApi\Dto\XF\ThreadDto::class, $thread,
-            "{$class} not instance of " . \XFApi\Dto\XF\ThreadDto::class);
+        $this->assertInstanceOf(
+            \XFApi\Dto\AbstractDto::class,
+            $thread,
+            "{$class} not instance of " . \XFApi\Dto\AbstractDto::class
+        );
+        $this->assertInstanceOf(
+            \XFApi\Dto\AbstractItemDto::class,
+            $thread,
+            "{$class} not instance of " . \XFApi\Dto\AbstractPaginatedDto::class
+        );
+        $this->assertInstanceOf(
+            \XFApi\Dto\XF\ThreadDto::class,
+            $thread,
+            "{$class} not instance of " . \XFApi\Dto\XF\ThreadDto::class
+        );
 
         $invalidThead = $this->api->getThread(PHP_INT_MAX);
         // TODO: Test invalid thread
