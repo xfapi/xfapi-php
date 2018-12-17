@@ -3,11 +3,24 @@
 namespace XFApi\Domain\XF;
 
 use XFApi\Domain\AbstractDomain;
+use XFApi\Dto\XF\PostsDto;
 use XFApi\Dto\XF\ThreadDto;
 use XFApi\Dto\XF\ThreadsDto;
 
 class ThreadDomain extends AbstractDomain
 {
+    public function create($nodeId, $title, $message, array $data = [])
+    {
+        $uri = $this->getUri();
+        $thread = $this->post($uri, [], array_merge([
+            'node_id' => $nodeId,
+            'title' => $title,
+            'message' => $message,
+        ], $data));
+
+        return $this->getDto(ThreadDto::class, $thread['thread']);
+    }
+
     /**
      * @param int $page
      *
@@ -16,14 +29,14 @@ class ThreadDomain extends AbstractDomain
      */
     public function getThreads($page = 1)
     {
-        $uri = $this->getUri('');
+        $uri = $this->getUri();
         $threads = $this->get($uri, ['page' => $page]);
 
         return $this->getPaginatedDto(ThreadsDto::class, $threads['threads'], $threads['pagination']);
     }
     
     /**
-     * @param $threadId
+     * @param int $threadId
      *
      * @return \XFApi\Dto\AbstractItemDto
      * @throws \XFApi\Exception\XFApiException
@@ -35,13 +48,20 @@ class ThreadDomain extends AbstractDomain
         return $this->getDto(ThreadDto::class, $thread['thread']);
     }
 
-//    public function getThreadPosts($threadId)
-//    {
-//        $uri = $this->getUri('posts', ['thread_id' => $threadId]);
-//        $posts = $this->requestGet($uri);
-//
-//        dump($posts);die;
-//    }
+    /**
+     * @param int $threadId
+     * @param int $page
+     *
+     * @return \XFApi\Dto\AbstractPaginatedDto
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function getThreadPosts($threadId, $page = 1)
+    {
+        $uri = $this->getUri('posts', ['thread_id' => $threadId]);
+        $posts = $this->get($uri, ['page' => $page]);
+
+        return $this->getPaginatedDto(PostsDto::class, $posts['posts'], $posts['pagination']);
+    }
 
     protected function getUri($uri = null, array $params = [])
     {
