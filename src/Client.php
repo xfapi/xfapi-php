@@ -4,7 +4,7 @@ namespace XFApi;
 
 use GuzzleHttp\Client as GuzzleClient;
 use XFApi\Container\AbstractContainer;
-use XFApi\Container\DBTech\eCommerceContainer as DBTecheCommeceContainer;
+use XFApi\Container\DBTech\ECommerceContainer as DBTechECommerceContainer;
 use XFApi\Container\XFContainer;
 use XFApi\Container\XFRMContainer;
 use XFApi\Exception\XFApiException;
@@ -15,7 +15,7 @@ use XFApi\Exception\XFApiException;
  *
  * @property XFContainer $xf
  * @property XFRMContainer $xfrm
- * @property DBTecheCommeceContainer $dbtech_ecommerce
+ * @property DBTechECommerceContainer $dbtech_ecommerce
  */
 class Client
 {
@@ -29,7 +29,7 @@ class Client
     protected $_container = [
         'xf' => XFContainer::class,
         'xfrm' => XFRMContainer::class,
-        'dbtech_ecommerce' => DBTecheCommeceContainer::class
+        'dbtech_ecommerce' => DBTechECommerceContainer::class
     ];
 
     protected $_containerCache = [];

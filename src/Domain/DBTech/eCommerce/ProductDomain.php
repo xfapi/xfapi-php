@@ -49,13 +49,11 @@ class ProductDomain extends AbstractDomain
     protected function getUri($uri = null, array $params = [])
     {
         $return = 'dbtech-ecommerce';
-        if (isset($params['product_id']))
-        {
+        if (isset($params['product_id'])) {
             $return .= '/' . $params['product_id'];
         }
 
-        if (!empty($uri))
-        {
+        if (!empty($uri)) {
             $return .= '/' . $uri;
         }
 
@@ -84,8 +82,7 @@ class ProductDomain extends AbstractDomain
         $boardUrl = 'N/A';
         $versionId = 0;
         
-        if (class_exists('XF', false))
-        {
+        if (class_exists('XF', false)) {
             /** @noinspection PhpUndefinedClassInspection */
             $boardUrl = \XF::options()->boardUrl;
             /** @noinspection PhpUndefinedClassInspection */

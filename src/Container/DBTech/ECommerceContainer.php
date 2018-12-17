@@ -11,7 +11,7 @@ use XFApi\Domain\DBTech\eCommerce\ProductDomain;
  *
  * @property-read ProductDomain $product
  */
-class eCommerceContainer extends AbstractContainer
+class ECommerceContainer extends AbstractContainer
 {
     protected $_product;
     

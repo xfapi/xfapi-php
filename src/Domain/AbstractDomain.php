@@ -170,5 +170,5 @@ abstract class AbstractDomain
         return new $class($items, $pagination);
     }
 
-    protected abstract function getUri($uri, array $params);
+    abstract protected function getUri($uri, array $params);
 }
