@@ -8,12 +8,12 @@ use XFApi\Dto\XF\ThreadsDto;
 
 class ThreadDomain extends AbstractDomain
 {
-	/**
-	 * @param int $page
-	 *
-	 * @return \XFApi\Dto\AbstractPaginatedDto
-	 * @throws \XFApi\Exception\XFApiException
-	 */
+    /**
+     * @param int $page
+     *
+     * @return \XFApi\Dto\AbstractPaginatedDto
+     * @throws \XFApi\Exception\XFApiException
+     */
     public function getThreads($page = 1)
     {
         $uri = $this->getUri('');
@@ -21,13 +21,13 @@ class ThreadDomain extends AbstractDomain
 
         return $this->getPaginatedDto(ThreadsDto::class, $threads['threads'], $threads['pagination']);
     }
-	
-	/**
-	 * @param $threadId
-	 *
-	 * @return \XFApi\Dto\AbstractItemDto
-	 * @throws \XFApi\Exception\XFApiException
-	 */
+    
+    /**
+     * @param $threadId
+     *
+     * @return \XFApi\Dto\AbstractItemDto
+     * @throws \XFApi\Exception\XFApiException
+     */
     public function getThread($threadId)
     {
         $uri = $this->getUri(null, ['thread_id' => $threadId]);

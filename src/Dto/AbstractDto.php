@@ -8,5 +8,5 @@ namespace XFApi\Dto;
  */
 abstract class AbstractDto
 {
-    public abstract function __get($name);
+    abstract public function __get($name);
 }

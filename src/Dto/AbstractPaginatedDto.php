@@ -113,7 +113,7 @@ abstract class AbstractPaginatedDto extends AbstractDto implements \Countable, \
         reset($this->_items);
     }
 
-    protected abstract function getItemDtoClass();
+    abstract protected function getItemDtoClass();
 
-    protected abstract function getItemsKey();
+    abstract protected function getItemsKey();
 }

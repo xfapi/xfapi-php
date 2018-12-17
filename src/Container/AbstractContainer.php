@@ -48,8 +48,8 @@ abstract class AbstractContainer
      */
     public function __get($name)
     {
-        if(isset($this->_domains[$name])) {
-            if(!isset($this->_domainCache[$name])) {
+        if (isset($this->_domains[$name])) {
+            if (!isset($this->_domainCache[$name])) {
                 $class = $this->_domains[$name];
                 $this->_domainCache[$name] = new $class($this->getApiClient());
             }

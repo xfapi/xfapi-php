@@ -7,12 +7,13 @@ abstract class AbstractTreeDto extends AbstractDto implements \Countable, \Itera
     protected $_treeMap;
     protected $_items;
 
-    public function __construct(array $treeMap, array $items) {
+    public function __construct(array $treeMap, array $items)
+    {
         $this->_treeMap = $treeMap;
 
         $itemDtoClass = $this->getItemDtoClass();
         $itemDtos = [];
-        foreach($items as $key => $item) {
+        foreach ($items as $key => $item) {
             $itemDtos[$key] = new $itemDtoClass($item);
         }
 
@@ -84,7 +85,7 @@ abstract class AbstractTreeDto extends AbstractDto implements \Countable, \Itera
         // TODO: Implement offsetUnset() method.
     }
 
-    protected abstract function getItemDtoClass();
+    abstract protected function getItemDtoClass();
 
-    protected abstract function getItemsKey();
+    abstract protected function getItemsKey();
 }

@@ -12,17 +12,17 @@ use XFApi\Domain\XF\ThreadDomain;
  */
 class XFContainer extends AbstractContainer
 {
-	protected $_thread;
-	
-	/**
-	 * @return ThreadDomain
-	 */
-	public function getThread()
-	{
-		if (!$this->_thread) {
-			$this->_thread = new ThreadDomain($this->getApiClient());
-		}
-		
-		return $this->_thread;
-	}
+    protected $_thread;
+    
+    /**
+     * @return ThreadDomain
+     */
+    public function getThread()
+    {
+        if (!$this->_thread) {
+            $this->_thread = new ThreadDomain($this->getApiClient());
+        }
+        
+        return $this->_thread;
+    }
 }
