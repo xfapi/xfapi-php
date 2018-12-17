@@ -1,4 +1,0 @@
-engines:
-  phpcs:
-    enabled: true
-    php_version: 5.6

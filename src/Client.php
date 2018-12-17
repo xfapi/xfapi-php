@@ -7,6 +7,9 @@ use XFApi\Container\AbstractContainer;
 use XFApi\Container\DBTech\ECommerceContainer as DBTechECommerceContainer;
 use XFApi\Container\XFContainer;
 use XFApi\Container\XFRMContainer;
+use XFApi\Exception\RequestException\FallbackRequestException;
+use XFApi\Exception\RequestException\NoPermissionRequestException;
+use XFApi\Exception\RequestException\NotFoundRequestException;
 use XFApi\Exception\XFApiException;
 
 /**
@@ -248,14 +251,39 @@ class Client
             throw new XFApiException($e->getMessage());
         }
 
+        $body = json_decode($request->getBody()->getContents(), true);
+
         switch ($request->getStatusCode()) {
             case 200:
                 /** @noinspection PhpComposerExtensionStubsInspection */
-                return json_decode($request->getBody()->getContents(), true);
+                return $body;
             default:
-                // todo: implement exceptions for different possible error codes.
-                throw new XFApiException('HTTP Error code: ' . $request->getStatusCode());
+                $this->handleException($request->getStatusCode(), $body);
         }
+    }
+
+    protected function handleException($statusCode, $body)
+    {
+        switch ($statusCode) {
+            case 400:
+                $exceptionClass = NoPermissionRequestException::class;
+                break;
+            case 403:
+                $exceptionClass = NoPermissionRequestException::class;
+                break;
+            case 404:
+                $exceptionClass = NotFoundRequestException::class;
+                break;
+            default:
+                $exceptionClass = FallbackRequestException::class;
+                break;
+        }
+
+        $exception = new $exceptionClass('', $statusCode);
+
+        $exception->setBody($body);
+
+        throw $exception;
     }
 
     /**
