@@ -2,15 +2,15 @@
 
 namespace XFApi\Domain\DBTech\eCommerce;
 
-use XFApi\Dto\DBTech\eCommerce\ProductDto;
-use XFApi\Dto\DBTech\eCommerce\ProductsDto;
+use XFApi\Dto\DBTech\eCommerce\ProductReviewDto;
+use XFApi\Dto\DBTech\eCommerce\ProductReviewsDto;
 
 /**
- * Class ProductDomain
+ * Class ProductReviewDomain
  *
  * @package XFApi\Domain\DBTech\eCommerce
  */
-class ProductDomain extends AbstracteCommerceDomain
+class ProductReviewDomain extends AbstracteCommerceDomain
 {
     /**
      * @param int $page
@@ -18,12 +18,12 @@ class ProductDomain extends AbstracteCommerceDomain
      * @return \XFApi\Dto\AbstractPaginatedDto
      * @throws \XFApi\Exception\XFApiException
      */
-    public function getProducts($page = 1)
+    public function getReviews($page = 1)
     {
         $uri = $this->getUri('');
         $products = $this->get($uri, ['page' => $page]);
 
-        return $this->getPaginatedDto(ProductsDto::class, $products['products'], $products['pagination']);
+        return $this->getPaginatedDto(ProductReviewsDto::class, $products['products'], $products['pagination']);
     }
     
     /**
@@ -32,11 +32,11 @@ class ProductDomain extends AbstracteCommerceDomain
      * @return \XFApi\Dto\AbstractItemDto
      * @throws \XFApi\Exception\XFApiException
      */
-    public function getProduct($productId)
+    public function getReview($productId)
     {
-        $uri = $this->getUri(null, ['product_id' => $productId]);
-        $product = $this->get($uri);
-        return $this->getDto(ProductDto::class, $product['product']);
+        $uri = $this->getUri(null, ['product_rating_id' => $productId]);
+        $review = $this->get($uri);
+        return $this->getDto(ProductReviewDto::class, $review['review']);
     }
     
     /**
@@ -47,9 +47,9 @@ class ProductDomain extends AbstracteCommerceDomain
      */
     protected function getUri($uri = null, array $params = [])
     {
-        $return = 'dbtech-ecommerce';
-        if (isset($params['product_id'])) {
-            $return .= '/' . $params['product_id'];
+        $return = 'dbtech-ecommerce/reviews';
+        if (isset($params['product_rating_id'])) {
+            $return .= '/' . $params['product_rating_id'];
         }
 
         if (!empty($uri)) {
@@ -64,6 +64,6 @@ class ProductDomain extends AbstracteCommerceDomain
      */
     protected function getDtoClass()
     {
-        return ProductDto::class;
+        return ProductReviewsDto::class;
     }
 }
