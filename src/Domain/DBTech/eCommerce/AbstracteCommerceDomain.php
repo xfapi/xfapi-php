@@ -23,7 +23,7 @@ abstract class AbstracteCommerceDomain extends AbstractDomain
      */
     public function get($endpoint, array $params = [], array $headers = [])
     {
-        $boardUrl = 'N/A';
+        $boardUrl = 'http://localhost/devboards/xf2_iau';
         $versionId = 0;
         
         if (class_exists('XF', false)) {

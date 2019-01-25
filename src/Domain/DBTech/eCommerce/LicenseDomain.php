@@ -10,17 +10,16 @@ class LicenseDomain extends AbstracteCommerceDomain
     /**
      * @param array $categoryIds
      * @param array $platforms
-     * @param int $page
      *
-     * @return \XFApi\Dto\AbstractPaginatedDto
+     * @return \XFApi\Dto\AbstractItemDto[]
      * @throws \XFApi\Exception\XFApiException
      */
-    public function getLicenses($categoryIds = [], $platforms = [], $page = 1)
+    public function getLicenses($categoryIds = [], $platforms = [])
     {
         $uri = $this->getUri('');
-        $licenses = $this->get($uri, ['category_ids' => $categoryIds, 'platforms' => $platforms, 'page' => $page]);
+        $licenses = $this->get($uri, ['category_ids' => $categoryIds, 'platforms' => $platforms]);
         
-        return $this->getPaginatedDto(LicensesDto::class, $licenses['licenses'], $licenses['pagination']);
+        return $this->getDtos(LicenseDto::class, $licenses['licenses']);
     }
     
     /**

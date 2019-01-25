@@ -59,7 +59,7 @@ class ProductDomain extends AbstracteCommerceDomain
      * @param array $categoryIds
      * @param array $platforms
      *
-     * @return \XFApi\Dto\AbstractDto
+     * @return \XFApi\Dto\AbstractItemDto[]
      * @throws \XFApi\Exception\XFApiException
      */
     public function getPurchases($categoryIds = [], $platforms = [])
@@ -67,7 +67,7 @@ class ProductDomain extends AbstracteCommerceDomain
         $uri = $this->getUri('purchased');
         $products = $this->get($uri, ['category_ids' => $categoryIds, 'platforms' => $platforms]);
         
-        return $this->getDto(ProductsDto::class, $products['products']);
+        return $this->getDtos(ProductDto::class, $products['products']);
     }
     
     /**

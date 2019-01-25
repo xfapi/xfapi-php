@@ -21,9 +21,9 @@ class ProductReviewDomain extends AbstracteCommerceDomain
     public function getReviews($page = 1)
     {
         $uri = $this->getUri('');
-        $products = $this->get($uri, ['page' => $page]);
+        $reviews = $this->get($uri, ['page' => $page]);
 
-        return $this->getPaginatedDto(ProductReviewsDto::class, $products['products'], $products['pagination']);
+        return $this->getPaginatedDto(ProductReviewsDto::class, $reviews['reviews'], $reviews['pagination']);
     }
     
     /**

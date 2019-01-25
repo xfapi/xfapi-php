@@ -39,6 +39,6 @@ class DownloadDto extends AbstractItemDto
 {
     protected $_relations = [
         'Product' => ProductDto::class,
-        'Versions' => DownloadVersionsDto::class
+//        'Versions' => DownloadVersionsDto::class
     ];
 }

@@ -8,20 +8,6 @@ use XFApi\Dto\DBTech\eCommerce\DownloadsDto;
 class DownloadDomain extends AbstracteCommerceDomain
 {
     /**
-     * @param int $page
-     *
-     * @return \XFApi\Dto\AbstractPaginatedDto
-     * @throws \XFApi\Exception\XFApiException
-     */
-    public function getDownloads($page = 1)
-    {
-        $uri = $this->getUri('');
-        $downloads = $this->get($uri, ['page' => $page]);
-        
-        return $this->getPaginatedDto(DownloadsDto::class, $downloads['downloads'], $downloads['pagination']);
-    }
-    
-    /**
      * @param $downloadId
      *
      * @return \XFApi\Dto\AbstractItemDto
