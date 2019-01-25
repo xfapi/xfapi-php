@@ -23,7 +23,7 @@ class CategoryDomain extends AbstracteCommerceDomain
         $uri = $this->getUri('');
         $categories = $this->get($uri, ['page' => $page]);
 
-        return $this->getPaginatedDto(CategoriesDto::class, $categories['tree_map'], $categories['nodes']);
+        return $this->getPaginatedDto(CategoriesDto::class, $categories['tree_map'], $categories['categories']);
     }
     
     /**
@@ -52,7 +52,7 @@ class CategoryDomain extends AbstracteCommerceDomain
             $return .= '/' . $params['category_id'];
         }
 
-        if (!empty($uri)) {
+        if ($uri !== null) {
             $return .= '/' . $uri;
         }
 

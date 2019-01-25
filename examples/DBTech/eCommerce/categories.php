@@ -1,6 +1,7 @@
 <?php
 
-require_once '../../lib.php';
+$dir = __DIR__;
+require_once $dir . '/../../lib.php';
 
 $categoryApi = $client->dbtech_ecommerce->category;
 

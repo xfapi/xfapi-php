@@ -46,8 +46,8 @@ class DownloadDomain extends AbstracteCommerceDomain
         if (isset($params['download_id'])) {
             $return .= '/' . $params['download_id'];
         }
-        
-        if (!empty($uri)) {
+    
+        if ($uri !== null) {
             $return .= '/' . $uri;
         }
         

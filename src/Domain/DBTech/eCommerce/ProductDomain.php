@@ -82,8 +82,8 @@ class ProductDomain extends AbstracteCommerceDomain
         if (isset($params['product_id'])) {
             $return .= '/' . $params['product_id'];
         }
-
-        if (!empty($uri)) {
+    
+        if ($uri !== null) {
             $return .= '/' . $uri;
         }
 

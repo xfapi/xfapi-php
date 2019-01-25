@@ -51,8 +51,8 @@ class ProductReviewDomain extends AbstracteCommerceDomain
         if (isset($params['product_rating_id'])) {
             $return .= '/' . $params['product_rating_id'];
         }
-
-        if (!empty($uri)) {
+    
+        if ($uri !== null) {
             $return .= '/' . $uri;
         }
 

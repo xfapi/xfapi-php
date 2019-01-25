@@ -49,7 +49,7 @@ class LicenseDomain extends AbstracteCommerceDomain
             $return .= '/' . $params['license_key'];
         }
     
-        if (!empty($uri)) {
+        if ($uri !== null) {
             $return .= '/' . $uri;
         }
     
