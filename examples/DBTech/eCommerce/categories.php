@@ -6,4 +6,4 @@ $categoryApi = $client->dbtech_ecommerce->category;
 
 $categories = $categoryApi->getCategories();
 
-$category = $categoryApi->getCategory(1);
+$category = $categoryApi->getCategory(5);

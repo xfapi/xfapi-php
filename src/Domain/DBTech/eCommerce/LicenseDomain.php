@@ -24,6 +24,19 @@ class LicenseDomain extends AbstracteCommerceDomain
     }
     
     /**
+     * @param $licenseKey
+     *
+     * @return \XFApi\Dto\AbstractItemDto
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function getLicense($licenseKey)
+    {
+        $uri = $this->getUri(null, ['license_key' => $licenseKey]);
+        $license = $this->get($uri);
+        return $this->getDto(LicenseDto::class, $license['license']);
+    }
+    
+    /**
      * @param null $uri
      * @param array $params
      *
@@ -31,7 +44,16 @@ class LicenseDomain extends AbstracteCommerceDomain
      */
     protected function getUri($uri = null, array $params = [])
     {
-        return 'dbtech-ecommerce/licenses';
+        $return = 'dbtech-ecommerce/licenses';
+        if (isset($params['license_key'])) {
+            $return .= '/' . $params['license_key'];
+        }
+    
+        if (!empty($uri)) {
+            $return .= '/' . $uri;
+        }
+    
+        return $return;
     }
     
     /**

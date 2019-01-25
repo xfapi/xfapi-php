@@ -6,4 +6,4 @@ $reviewsApi = $client->dbtech_ecommerce->review;
 
 $reviews = $reviewsApi->getReviews();
 
-$review = $reviewsApi->getReview(1);
+$review = $reviewsApi->getReview(5);

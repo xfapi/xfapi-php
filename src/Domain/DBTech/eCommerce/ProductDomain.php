@@ -2,6 +2,7 @@
 
 namespace XFApi\Domain\DBTech\eCommerce;
 
+use XFApi\Dto\DBTech\eCommerce\DownloadDto;
 use XFApi\Dto\DBTech\eCommerce\ProductDto;
 use XFApi\Dto\DBTech\eCommerce\ProductsDto;
 
@@ -37,6 +38,36 @@ class ProductDomain extends AbstracteCommerceDomain
         $uri = $this->getUri(null, ['product_id' => $productId]);
         $product = $this->get($uri);
         return $this->getDto(ProductDto::class, $product['product']);
+    }
+    
+    /**
+     * @param $productId
+     * @param string $productVersion
+     * @param string $productVersionType
+     *
+     * @return \XFApi\Dto\AbstractItemDto
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function getLatestVersion($productId, $productVersion = '', $productVersionType = '')
+    {
+        $uri = $this->getUri('latest-version', ['product_id' => $productId]);
+        $latestVersion = $this->get($uri, ['product_version' => $productVersion, 'product_version_type' => $productVersionType]);
+        return $this->getDto(DownloadDto::class, $latestVersion['latestVersion']);
+    }
+    
+    /**
+     * @param array $categoryIds
+     * @param array $platforms
+     *
+     * @return \XFApi\Dto\AbstractDto
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function getPurchases($categoryIds = [], $platforms = [])
+    {
+        $uri = $this->getUri('purchased');
+        $products = $this->get($uri, ['category_ids' => $categoryIds, 'platforms' => $platforms]);
+        
+        return $this->getDto(ProductsDto::class, $products['products']);
     }
     
     /**

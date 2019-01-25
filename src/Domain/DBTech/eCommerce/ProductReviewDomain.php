@@ -27,14 +27,14 @@ class ProductReviewDomain extends AbstracteCommerceDomain
     }
     
     /**
-     * @param $productId
+     * @param $reviewId
      *
      * @return \XFApi\Dto\AbstractItemDto
      * @throws \XFApi\Exception\XFApiException
      */
-    public function getReview($productId)
+    public function getReview($reviewId)
     {
-        $uri = $this->getUri(null, ['product_rating_id' => $productId]);
+        $uri = $this->getUri(null, ['product_rating_id' => $reviewId]);
         $review = $this->get($uri);
         return $this->getDto(ProductReviewDto::class, $review['review']);
     }
