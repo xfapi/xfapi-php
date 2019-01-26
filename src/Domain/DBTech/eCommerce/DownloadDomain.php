@@ -21,6 +21,22 @@ class DownloadDomain extends AbstracteCommerceDomain
     }
     
     /**
+     * @param integer $downloadId
+     * @param string $productVersion
+     * @param string $productVersionType
+     * @param string $saveTo
+     *
+     * @return array
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function downloadFile($downloadId, $productVersion, $productVersionType, $saveTo)
+    {
+        $uri = $this->getUri('download', ['download_id' => $downloadId]);
+        $this->get($uri, ['product_version' => $productVersion, 'product_version_type' => $productVersionType], [], $saveTo);
+        return ['success' => true];
+    }
+    
+    /**
      * @param null $uri
      * @param array $params
      *

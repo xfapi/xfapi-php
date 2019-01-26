@@ -16,12 +16,13 @@ abstract class AbstracteCommerceDomain extends AbstractDomain
      * @param $endpoint
      * @param array $params
      * @param array $headers
+     * @param string|null $saveTo
      *
      * @return array
      *
      * @throws \XFApi\Exception\XFApiException
      */
-    public function get($endpoint, array $params = [], array $headers = [])
+    public function get($endpoint, array $params = [], array $headers = [], $saveTo = null)
     {
         $boardUrl = 'http://localhost/devboards/xf2_iau';
         $versionId = 0;
@@ -40,6 +41,6 @@ abstract class AbstracteCommerceDomain extends AbstractDomain
             'X-DragonByte-SoftwareVersion' => $versionId
         ], $headers);
         
-        return parent::get($endpoint, $params, $headers);
+        return parent::get($endpoint, $params, $headers, $saveTo);
     }
 }
