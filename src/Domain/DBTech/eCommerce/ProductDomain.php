@@ -84,7 +84,7 @@ class ProductDomain extends AbstracteCommerceDomain
         $uri = $this->getUri('downloads', ['product_version' => $productVersion, 'product_version_type' => $productVersionType]);
         $downloads = $this->get($uri, ['page' => $page]);
         
-        return $this->getPaginatedDto(DownloadsDto::class, $downloads['downloads'], $products['pagination']);
+        return $this->getPaginatedDto(DownloadsDto::class, $downloads['downloads'], $downloads['pagination']);
     }
     
     /**
