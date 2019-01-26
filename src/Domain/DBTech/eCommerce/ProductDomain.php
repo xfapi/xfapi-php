@@ -3,6 +3,7 @@
 namespace XFApi\Domain\DBTech\eCommerce;
 
 use XFApi\Dto\DBTech\eCommerce\DownloadDto;
+use XFApi\Dto\DBTech\eCommerce\DownloadsDto;
 use XFApi\Dto\DBTech\eCommerce\ProductDto;
 use XFApi\Dto\DBTech\eCommerce\ProductsDto;
 
@@ -68,6 +69,22 @@ class ProductDomain extends AbstracteCommerceDomain
         $products = $this->get($uri, ['category_ids' => $categoryIds, 'platforms' => $platforms]);
         
         return $this->getDtos(ProductDto::class, $products['products']);
+    }
+    
+    /**
+     * @param null $productVersion
+     * @param null $productVersionType
+     * @param int $page
+     *
+     * @return \XFApi\Dto\AbstractPaginatedDto
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function getDownloads($productVersion = null, $productVersionType = null, $page = 1)
+    {
+        $uri = $this->getUri('downloads', ['product_version' => $productVersion, 'product_version_type' => $productVersionType]);
+        $downloads = $this->get($uri, ['page' => $page]);
+        
+        return $this->getPaginatedDto(DownloadsDto::class, $downloads['downloads'], $products['pagination']);
     }
     
     /**
