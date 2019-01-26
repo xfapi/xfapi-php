@@ -43,13 +43,14 @@ abstract class AbstractDomain
      * @param $endpoint
      * @param array $params
      * @param array $headers
+     * @param string|null $saveTo
      *
      * @return array
      * @throws XFApiException
      */
-    public function get($endpoint, array $params = [], array $headers = [])
+    public function get($endpoint, array $params = [], array $headers = [], $saveTo = null)
     {
-        return $this->getApiClient()->get($endpoint, $params, $headers);
+        return $this->getApiClient()->get($endpoint, $params, $headers, $saveTo);
     }
 
     /**
