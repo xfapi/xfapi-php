@@ -16,9 +16,9 @@ use XFApi\Domain\XF\PostDomain;
  */
 class XFContainer extends AbstractContainer
 {
-	protected $_domains = [
-		'index' => IndexDomain::class,
-		'thread' => ThreadDomain::class,
-		'post' => PostDomain::class,
-	];
+    protected $_domains = [
+        'index' => IndexDomain::class,
+        'thread' => ThreadDomain::class,
+        'post' => PostDomain::class,
+    ];
 }
