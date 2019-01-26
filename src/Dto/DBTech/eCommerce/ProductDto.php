@@ -57,6 +57,7 @@ use XFApi\Dto\AbstractItemDto;
  * @property-read string username
  * @property-read string warning_message
  *
+ * @property-read DownloadDto LatestVersion
  * @property-read CategoryDto Category
  */
 class ProductDto extends AbstractItemDto
