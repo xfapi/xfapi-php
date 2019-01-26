@@ -2,7 +2,9 @@
 
 namespace XFApi\Container;
 
+use XFApi\Domain\XF\IndexDomain;
 use XFApi\Domain\XF\ThreadDomain;
+use XFApi\Domain\XF\PostDomain;
 
 /**
  * Class XF
