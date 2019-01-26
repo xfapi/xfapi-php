@@ -72,14 +72,14 @@ class ProductDomain extends AbstracteCommerceDomain
     }
     
     /**
-     * @param null $productVersion
-     * @param null $productVersionType
+     * @param string $productVersion
+     * @param string $productVersionType
      * @param int $page
      *
      * @return \XFApi\Dto\AbstractPaginatedDto
      * @throws \XFApi\Exception\XFApiException
      */
-    public function getDownloads($productVersion = null, $productVersionType = null, $page = 1)
+    public function getDownloads($productVersion = '', $productVersionType = '', $page = 1)
     {
         $uri = $this->getUri('downloads', ['product_version' => $productVersion, 'product_version_type' => $productVersionType]);
         $downloads = $this->get($uri, ['page' => $page]);
