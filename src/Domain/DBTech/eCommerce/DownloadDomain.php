@@ -32,7 +32,12 @@ class DownloadDomain extends AbstracteCommerceDomain
     public function downloadFile($downloadId, $productVersion, $productVersionType, $saveTo)
     {
         $uri = $this->getUri('download', ['download_id' => $downloadId]);
-        $this->get($uri, ['product_version' => $productVersion, 'product_version_type' => $productVersionType], [], $saveTo);
+        $this->get($uri, [
+            'product_version' => $productVersion,
+            'product_version_type' => $productVersionType],
+            [],
+            $saveTo
+        );
         return ['success' => true];
     }
     

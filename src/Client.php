@@ -217,8 +217,14 @@ class Client
      *
      * @throws XFApiException
      */
-    public function request($method, $endpoint, array $params = [],
-                            array $data = [], array $headers = [], $saveTo = null)
+    public function request(
+        $method,
+        $endpoint,
+        array $params = [],
+        array $data = [],
+        array $headers = [],
+        $saveTo = null
+    )
     {
         $headers = array_merge($headers, [
             'XF-Api-Key' => $this->getApiKey(),
