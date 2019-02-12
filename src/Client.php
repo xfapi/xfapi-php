@@ -224,8 +224,7 @@ class Client
         array $data = [],
         array $headers = [],
         $saveTo = null
-    )
-    {
+    ) {
         $headers = array_merge($headers, [
             'XF-Api-Key' => $this->getApiKey(),
             'User-Agent' => 'xfapi-php/' . self::LIBRARY_VERSION .
@@ -291,8 +290,16 @@ class Client
                     $this->handleException($request->getStatusCode(), $body);
             }
         }
+        
+        return [];
     }
-
+    
+    /**
+     * @param $statusCode
+     * @param $body
+     *
+     * @throws Exception\RequestException\AbstractRequestException
+     */
     protected function handleException($statusCode, $body)
     {
         switch ($statusCode) {
@@ -310,6 +317,7 @@ class Client
                 break;
         }
 
+        /** @var \XFApi\Exception\RequestException\AbstractRequestException $exception */
         $exception = new $exceptionClass('', $statusCode);
 
         $exception->setBody($body);
