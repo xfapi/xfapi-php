@@ -52,7 +52,10 @@ class ProductDomain extends AbstracteCommerceDomain
     public function getLatestVersion($productId, $productVersion = '', $productVersionType = '')
     {
         $uri = $this->getUri('latest-version', ['product_id' => $productId]);
-        $latestVersion = $this->get($uri, ['product_version' => $productVersion, 'product_version_type' => $productVersionType]);
+        $latestVersion = $this->get($uri, [
+            'product_version' => $productVersion,
+            'product_version_type' => $productVersionType
+        ]);
         return $this->getDto(DownloadDto::class, $latestVersion['latestVersion']);
     }
     
@@ -82,7 +85,11 @@ class ProductDomain extends AbstracteCommerceDomain
      */
     public function getDownloads($productId, $productVersion = '', $productVersionType = '', $page = 1)
     {
-        $uri = $this->getUri('downloads', ['product_id' => $productId, 'product_version' => $productVersion, 'product_version_type' => $productVersionType]);
+        $uri = $this->getUri('downloads', [
+            'product_id' => $productId,
+            'product_version' => $productVersion,
+            'product_version_type' => $productVersionType
+        ]);
         $downloads = $this->get($uri, ['page' => $page]);
         
         return $this->getPaginatedDto(DownloadsDto::class, $downloads['downloads'], $downloads['pagination']);

@@ -217,7 +217,8 @@ class Client
      *
      * @throws XFApiException
      */
-    public function request($method, $endpoint, array $params = [], array $data = [], array $headers = [], $saveTo = null)
+    public function request($method, $endpoint, array $params = [],
+                            array $data = [], array $headers = [], $saveTo = null)
     {
         $headers = array_merge($headers, [
             'XF-Api-Key' => $this->getApiKey(),
@@ -244,8 +245,7 @@ class Client
             $requestOptions['form_params'] = $data;
         }
     
-        if (is_string($saveTo))
-        {
+        if (is_string($saveTo)) {
             $requestOptions['stream'] = true;
         }
     
@@ -258,8 +258,7 @@ class Client
             throw new XFApiException($e->getMessage());
         }
     
-        if (is_string($saveTo))
-        {
+        if (is_string($saveTo)) {
             switch ($request->getStatusCode()) {
                 case 200:
                     /** @noinspection PhpComposerExtensionStubsInspection */
@@ -275,9 +274,7 @@ class Client
                 default:
                     $this->handleException($request->getStatusCode(), $request->getBody()->getContents());
             }
-        }
-        else
-        {
+        } else {
             $body = json_decode($request->getBody()->getContents(), true);
     
             switch ($request->getStatusCode()) {
