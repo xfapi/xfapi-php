@@ -24,7 +24,7 @@ abstract class AbstracteCommerceDomain extends AbstractDomain
      */
     public function get($endpoint, array $params = [], array $headers = [], $saveTo = null)
     {
-        $boardUrl = 'http://localhost/devboards/xf2_iau';
+        $boardUrl = 'https://www.dragonbyte-tech.com';
         $versionId = 0;
         
         if (class_exists('XF', false)) {
