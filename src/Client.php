@@ -277,7 +277,8 @@ class Client
                     
                     return ['filePath' => $saveTo];
                 default:
-                    $this->handleException($request->getStatusCode(), $request->getBody()->getContents());
+                    $body = json_decode($request->getBody()->getContents(), true);
+                    $this->handleException($request->getStatusCode(), $body);
             }
         } else {
             $body = json_decode($request->getBody()->getContents(), true);
@@ -320,7 +321,7 @@ class Client
         /** @var \XFApi\Exception\RequestException\AbstractRequestException $exception */
         $exception = new $exceptionClass('', $statusCode);
 
-        $exception->setBody(is_array($body) ? $body : [$body]);
+        $exception->setBody($body);
 
         throw $exception;
     }
