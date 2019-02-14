@@ -320,7 +320,7 @@ class Client
         /** @var \XFApi\Exception\RequestException\AbstractRequestException $exception */
         $exception = new $exceptionClass('', $statusCode);
 
-        $exception->setBody($body);
+        $exception->setBody(is_array($body) ? $body : [$body]);
 
         throw $exception;
     }
