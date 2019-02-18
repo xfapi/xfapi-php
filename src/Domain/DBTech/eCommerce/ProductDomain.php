@@ -2,7 +2,8 @@
 
 namespace XFApi\Domain\DBTech\eCommerce;
 
-use XFApi\Domain\AbstractDomain;
+use XFApi\Dto\DBTech\eCommerce\DownloadDto;
+use XFApi\Dto\DBTech\eCommerce\DownloadsDto;
 use XFApi\Dto\DBTech\eCommerce\ProductDto;
 use XFApi\Dto\DBTech\eCommerce\ProductsDto;
 
@@ -11,7 +12,7 @@ use XFApi\Dto\DBTech\eCommerce\ProductsDto;
  *
  * @package XFApi\Domain\DBTech\eCommerce
  */
-class ProductDomain extends AbstractDomain
+class ProductDomain extends AbstracteCommerceDomain
 {
     /**
      * @param int $page
@@ -41,6 +42,60 @@ class ProductDomain extends AbstractDomain
     }
     
     /**
+     * @param $productId
+     * @param string $productVersion
+     * @param string $productVersionType
+     *
+     * @return \XFApi\Dto\AbstractItemDto
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function getLatestVersion($productId, $productVersion = '', $productVersionType = '')
+    {
+        $uri = $this->getUri('latest-version', ['product_id' => $productId]);
+        $latestVersion = $this->get($uri, [
+            'product_version' => $productVersion,
+            'product_version_type' => $productVersionType
+        ]);
+        return $this->getDto(DownloadDto::class, $latestVersion['latestVersion']);
+    }
+    
+    /**
+     * @param array $categoryIds
+     * @param array $platforms
+     *
+     * @return \XFApi\Dto\AbstractItemDto[]
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function getPurchases($categoryIds = [], $platforms = [])
+    {
+        $uri = $this->getUri('purchased');
+        $products = $this->get($uri, ['category_ids' => $categoryIds, 'platforms' => $platforms]);
+        
+        return $this->getDtos(ProductDto::class, $products['products']);
+    }
+    
+    /**
+     * @param integer $productId
+     * @param string $productVersion
+     * @param string $productVersionType
+     * @param integer $page
+     *
+     * @return \XFApi\Dto\AbstractPaginatedDto
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function getDownloads($productId, $productVersion = '', $productVersionType = '', $page = 1)
+    {
+        $uri = $this->getUri('downloads', [
+            'product_id' => $productId,
+            'product_version' => $productVersion,
+            'product_version_type' => $productVersionType
+        ]);
+        $downloads = $this->get($uri, ['page' => $page]);
+        
+        return $this->getPaginatedDto(DownloadsDto::class, $downloads['downloads'], $downloads['pagination']);
+    }
+    
+    /**
      * @param null $uri
      * @param array $params
      *
@@ -52,8 +107,8 @@ class ProductDomain extends AbstractDomain
         if (isset($params['product_id'])) {
             $return .= '/' . $params['product_id'];
         }
-
-        if (!empty($uri)) {
+    
+        if ($uri !== null) {
             $return .= '/' . $uri;
         }
 
@@ -66,36 +121,5 @@ class ProductDomain extends AbstractDomain
     protected function getDtoClass()
     {
         return ProductDto::class;
-    }
-    
-    /**
-     * @param $endpoint
-     * @param array $params
-     * @param array $headers
-     *
-     * @return array
-     *
-     * @throws \XFApi\Exception\XFApiException
-     */
-    public function get($endpoint, array $params = [], array $headers = [])
-    {
-        $boardUrl = 'N/A';
-        $versionId = 0;
-        
-        if (class_exists('XF', false)) {
-            /** @noinspection PhpUndefinedClassInspection */
-            $boardUrl = \XF::options()->boardUrl;
-            /** @noinspection PhpUndefinedClassInspection */
-            $versionId = \XF::$versionId;
-        }
-        
-        $headers = array_replace([
-            'X-DragonByte-BoardUrl' => $boardUrl,
-            'X-DragonByte-HttpHost' => !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'N/A',
-            'X-DragonByte-Software' => 'XenForo',
-            'X-DragonByte-SoftwareVersion' => $versionId
-        ], $headers);
-        
-        return parent::get($endpoint, $params, $headers);
     }
 }

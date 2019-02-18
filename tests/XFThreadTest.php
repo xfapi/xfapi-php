@@ -43,7 +43,11 @@ final class XFThreadTest extends AbstractTest
         $this->assertTrue($firstPage->valid(), "Valid page reported as invalid.");
 
         $secondPage = $this->api->getThreads(2);
-        $this->assertNotEquals($firstPage->getItems(), $secondPage->getItems(), "First and second page items are equal.");
+        $this->assertNotEquals(
+            $firstPage->getItems(),
+            $secondPage->getItems(),
+            "First and second page items are equal."
+        );
     }
 
     public function testThread()

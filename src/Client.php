@@ -145,12 +145,13 @@ class Client
      * @param $endpoint
      * @param array $params
      * @param array $headers
+     * @param string|null $saveTo
      * @return array
      * @throws XFApiException
      */
-    public function get($endpoint, array $params = [], array $headers = [])
+    public function get($endpoint, array $params = [], array $headers = [], $saveTo = null)
     {
-        return $this->request('GET', $endpoint, $params, [], $headers);
+        return $this->request('GET', $endpoint, $params, [], $headers, $saveTo);
     }
 
     /**
@@ -211,12 +212,19 @@ class Client
      * @param array $params
      * @param array $data
      * @param array $headers
+     * @param string|null $saveTo
      * @return array
      *
      * @throws XFApiException
      */
-    public function request($method, $endpoint, array $params = [], array $data = [], array $headers = [])
-    {
+    public function request(
+        $method,
+        $endpoint,
+        array $params = [],
+        array $data = [],
+        array $headers = [],
+        $saveTo = null
+    ) {
         $headers = array_merge($headers, [
             'XF-Api-Key' => $this->getApiKey(),
             'User-Agent' => 'xfapi-php/' . self::LIBRARY_VERSION .
@@ -241,7 +249,11 @@ class Client
         if (strtolower($method) === 'post') {
             $requestOptions['form_params'] = $data;
         }
-
+    
+        if (is_string($saveTo)) {
+            $requestOptions['stream'] = true;
+        }
+    
         try {
             $request = $this->getHttpClient()->request($method, $this->getFullUrl($endpoint, $params), $requestOptions);
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
@@ -250,18 +262,45 @@ class Client
             // but just in case...
             throw new XFApiException($e->getMessage());
         }
-
-        $body = json_decode($request->getBody()->getContents(), true);
-
-        switch ($request->getStatusCode()) {
-            case 200:
-                /** @noinspection PhpComposerExtensionStubsInspection */
-                return $body;
-            default:
-                $this->handleException($request->getStatusCode(), $body);
+    
+        if (is_string($saveTo)) {
+            switch ($request->getStatusCode()) {
+                case 200:
+                    /** @noinspection PhpComposerExtensionStubsInspection */
+                    $res = fopen($saveTo, 'w+');
+    
+                    $body = $request->getBody();
+                    while (!$body->eof()) {
+                        fwrite($res, $body->read(1024));
+                    }
+                    fclose($res);
+                    
+                    return ['filePath' => $saveTo];
+                default:
+                    $body = json_decode($request->getBody()->getContents(), true);
+                    $this->handleException($request->getStatusCode(), $body);
+            }
+        } else {
+            $body = json_decode($request->getBody()->getContents(), true);
+    
+            switch ($request->getStatusCode()) {
+                case 200:
+                    /** @noinspection PhpComposerExtensionStubsInspection */
+                    return $body;
+                default:
+                    $this->handleException($request->getStatusCode(), $body);
+            }
         }
+        
+        return [];
     }
-
+    
+    /**
+     * @param $statusCode
+     * @param $body
+     *
+     * @throws Exception\RequestException\AbstractRequestException
+     */
     protected function handleException($statusCode, $body)
     {
         switch ($statusCode) {
@@ -279,6 +318,7 @@ class Client
                 break;
         }
 
+        /** @var \XFApi\Exception\RequestException\AbstractRequestException $exception */
         $exception = new $exceptionClass('', $statusCode);
 
         $exception->setBody($body);
