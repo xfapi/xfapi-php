@@ -2,6 +2,7 @@
 
 namespace XFApi\Container;
 
+use XFApi\Domain\XF\AuthDomain;
 use XFApi\Domain\XF\IndexDomain;
 use XFApi\Domain\XF\ThreadDomain;
 use XFApi\Domain\XF\PostDomain;
@@ -20,5 +21,6 @@ class XFContainer extends AbstractContainer
         'index' => IndexDomain::class,
         'thread' => ThreadDomain::class,
         'post' => PostDomain::class,
+        'auth' => AuthDomain::class
     ];
 }
