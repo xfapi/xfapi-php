@@ -24,7 +24,7 @@ class AuthDomain extends AbstractDomain
     {
         $uri = $this->getUri();
         $user = $this->post($uri, [], ['login' => $login, 'password' => $password, 'limit_ip' => $ip]);
-        return $this->getDto(UserDto::class, $user['user']);
+        return empty($user['user']) ? null : $this->getDto(UserDto::class, $user['user']);
     }
 
     protected function getDtoClass()
