@@ -20,11 +20,11 @@ class AuthDomain extends AbstractDomain
      * @return \XFApi\Dto\AbstractItemDto
      * @throws \XFApi\Exception\XFApiException
      */
-    protected function auth($login, $password, $ip = null)
+    public function auth($login, $password, $ip = null)
     {
         $uri = $this->getUri();
         $user = $this->post($uri, [], ['login' => $login, 'password' => $password, 'limit_ip' => $ip]);
-        return $this->getDto(UserDto::class, $user);
+        return $this->getDto(UserDto::class, $user['user']);
     }
 
     protected function getDtoClass()
