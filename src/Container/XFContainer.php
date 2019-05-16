@@ -14,6 +14,7 @@ use XFApi\Domain\XF\PostDomain;
  * @property-read IndexDomain $index
  * @property-read ThreadDomain $thread
  * @property-read PostDomain $post
+ * @property-read AuthDomain $auth
  */
 class XFContainer extends AbstractContainer
 {
