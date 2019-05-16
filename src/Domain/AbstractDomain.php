@@ -43,13 +43,14 @@ abstract class AbstractDomain
      * @param $endpoint
      * @param array $params
      * @param array $headers
+     * @param string|null $saveTo
      *
      * @return array
      * @throws XFApiException
      */
-    public function get($endpoint, array $params = [], array $headers = [])
+    public function get($endpoint, array $params = [], array $headers = [], $saveTo = null)
     {
-        return $this->getApiClient()->get($endpoint, $params, $headers);
+        return $this->getApiClient()->get($endpoint, $params, $headers, $saveTo);
     }
 
     /**
@@ -122,12 +123,12 @@ abstract class AbstractDomain
     {
         return $this->getApiClient()->request($method, $endpoint, $params, $data, $headers);
     }
-	
-	/**
-	 * @param array $attributes
-	 *
-	 * @return AbstractItemDto
-	 */
+    
+    /**
+     * @param array $attributes
+     *
+     * @return AbstractItemDto
+     */
     protected function getPaginationDto(array $attributes)
     {
         return $this->getDto(PaginationDto::class, $attributes);
@@ -170,5 +171,5 @@ abstract class AbstractDomain
         return new $class($items, $pagination);
     }
 
-    protected abstract function getUri($uri, array $params);
+    abstract protected function getUri($uri, array $params);
 }

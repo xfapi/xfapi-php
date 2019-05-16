@@ -42,7 +42,7 @@ class ResourceReviewDto extends AbstractItemDto
 
     public function getResource()
     {
-        if(!$this->_resource) {
+        if (!$this->_resource) {
             $this->_resource = new ResourceDto($this->_attributes['Resource']);
         }
 

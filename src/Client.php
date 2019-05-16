@@ -4,9 +4,12 @@ namespace XFApi;
 
 use GuzzleHttp\Client as GuzzleClient;
 use XFApi\Container\AbstractContainer;
-use XFApi\Container\DBTech\eCommerceContainer as DBTecheCommeceContainer;
+use XFApi\Container\DBTech\ECommerceContainer as DBTechECommerceContainer;
 use XFApi\Container\XFContainer;
 use XFApi\Container\XFRMContainer;
+use XFApi\Exception\RequestException\FallbackRequestException;
+use XFApi\Exception\RequestException\NoPermissionRequestException;
+use XFApi\Exception\RequestException\NotFoundRequestException;
 use XFApi\Exception\XFApiException;
 
 /**
@@ -15,7 +18,7 @@ use XFApi\Exception\XFApiException;
  *
  * @property XFContainer $xf
  * @property XFRMContainer $xfrm
- * @property DBTecheCommeceContainer $dbtech_ecommerce
+ * @property DBTechECommerceContainer $dbtech_ecommerce
  */
 class Client
 {
@@ -29,7 +32,7 @@ class Client
     protected $_container = [
         'xf' => XFContainer::class,
         'xfrm' => XFRMContainer::class,
-        'dbtech_ecommerce' => DBTecheCommeceContainer::class
+        'dbtech_ecommerce' => DBTechECommerceContainer::class
     ];
 
     protected $_containerCache = [];
@@ -142,12 +145,13 @@ class Client
      * @param $endpoint
      * @param array $params
      * @param array $headers
+     * @param string|null $saveTo
      * @return array
      * @throws XFApiException
      */
-    public function get($endpoint, array $params = [], array $headers = [])
+    public function get($endpoint, array $params = [], array $headers = [], $saveTo = null)
     {
-        return $this->request('GET', $endpoint, $params, [], $headers);
+        return $this->request('GET', $endpoint, $params, [], $headers, $saveTo);
     }
 
     /**
@@ -208,12 +212,19 @@ class Client
      * @param array $params
      * @param array $data
      * @param array $headers
+     * @param string|null $saveTo
      * @return array
      *
      * @throws XFApiException
      */
-    public function request($method, $endpoint, array $params = [], array $data = [], array $headers = [])
-    {
+    public function request(
+        $method,
+        $endpoint,
+        array $params = [],
+        array $data = [],
+        array $headers = [],
+        $saveTo = null
+    ) {
         $headers = array_merge($headers, [
             'XF-Api-Key' => $this->getApiKey(),
             'User-Agent' => 'xfapi-php/' . self::LIBRARY_VERSION .
@@ -238,7 +249,11 @@ class Client
         if (strtolower($method) === 'post') {
             $requestOptions['form_params'] = $data;
         }
-
+    
+        if (is_string($saveTo)) {
+            $requestOptions['stream'] = true;
+        }
+    
         try {
             $request = $this->getHttpClient()->request($method, $this->getFullUrl($endpoint, $params), $requestOptions);
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
@@ -247,15 +262,68 @@ class Client
             // but just in case...
             throw new XFApiException($e->getMessage());
         }
-
-        switch ($request->getStatusCode()) {
-            case 200:
-                /** @noinspection PhpComposerExtensionStubsInspection */
-                return json_decode($request->getBody()->getContents(), true);
-            default:
-                // todo: implement exceptions for different possible error codes.
-                throw new XFApiException('HTTP Error code: ' . $request->getStatusCode());
+    
+        if (is_string($saveTo)) {
+            switch ($request->getStatusCode()) {
+                case 200:
+                    /** @noinspection PhpComposerExtensionStubsInspection */
+                    $res = fopen($saveTo, 'w+');
+    
+                    $body = $request->getBody();
+                    while (!$body->eof()) {
+                        fwrite($res, $body->read(1024));
+                    }
+                    fclose($res);
+                    
+                    return ['filePath' => $saveTo];
+                default:
+                    $body = json_decode($request->getBody()->getContents(), true);
+                    $this->handleException($request->getStatusCode(), $body);
+            }
+        } else {
+            $body = json_decode($request->getBody()->getContents(), true);
+    
+            switch ($request->getStatusCode()) {
+                case 200:
+                    /** @noinspection PhpComposerExtensionStubsInspection */
+                    return $body;
+                default:
+                    $this->handleException($request->getStatusCode(), $body);
+            }
         }
+        
+        return [];
+    }
+    
+    /**
+     * @param $statusCode
+     * @param $body
+     *
+     * @throws Exception\RequestException\AbstractRequestException
+     */
+    protected function handleException($statusCode, $body)
+    {
+        switch ($statusCode) {
+            case 400:
+                $exceptionClass = NoPermissionRequestException::class;
+                break;
+            case 403:
+                $exceptionClass = NoPermissionRequestException::class;
+                break;
+            case 404:
+                $exceptionClass = NotFoundRequestException::class;
+                break;
+            default:
+                $exceptionClass = FallbackRequestException::class;
+                break;
+        }
+
+        /** @var \XFApi\Exception\RequestException\AbstractRequestException $exception */
+        $exception = new $exceptionClass('', $statusCode);
+
+        $exception->setBody($body);
+
+        throw $exception;
     }
 
     /**

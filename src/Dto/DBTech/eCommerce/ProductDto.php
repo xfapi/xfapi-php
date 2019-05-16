@@ -18,7 +18,6 @@ use XFApi\Dto\AbstractItemDto;
  * @property-read boolean can_react
  * @property-read boolean can_soft_delete
  * @property-read boolean can_view_product_images
- * @property-read array Category
  * @property-read string copyright_info
  * @property-read integer creation_date
  * @property-read string description_full
@@ -57,6 +56,9 @@ use XFApi\Dto\AbstractItemDto;
  * @property-read integer user_id
  * @property-read string username
  * @property-read string warning_message
+ *
+ * @property-read DownloadDto LatestVersion
+ * @property-read CategoryDto Category
  */
 class ProductDto extends AbstractItemDto
 {
