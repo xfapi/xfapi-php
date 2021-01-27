@@ -171,5 +171,17 @@ abstract class AbstractDomain
         return new $class($items, $pagination);
     }
 
+    /**
+     * @param $class
+     * @param array $items
+     * @param array $tree
+     *
+     * @return AbstractTreeDto
+     */
+    protected function getTreeDto($class, array $items, array $tree)
+    {
+        return new $class($items, $tree);
+    }
+
     abstract protected function getUri($uri, array $params);
 }

@@ -5,6 +5,7 @@ namespace XFApi\Container;
 use XFApi\Domain\XF\IndexDomain;
 use XFApi\Domain\XF\ThreadDomain;
 use XFApi\Domain\XF\PostDomain;
+use XFApi\Domain\XF\NodeDomain;
 
 /**
  * Class XF
@@ -13,6 +14,7 @@ use XFApi\Domain\XF\PostDomain;
  * @property-read IndexDomain $index
  * @property-read ThreadDomain $thread
  * @property-read PostDomain $post
+ * @property-read NodeDomain $post
  */
 class XFContainer extends AbstractContainer
 {
@@ -20,5 +22,6 @@ class XFContainer extends AbstractContainer
         'index' => IndexDomain::class,
         'thread' => ThreadDomain::class,
         'post' => PostDomain::class,
+        'node' => NodeDomain::class,
     ];
 }
