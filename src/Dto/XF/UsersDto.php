@@ -2,7 +2,7 @@
 
 namespace XFApi\Dto\XF;
 
-use XFApi\Dto\AbstractPaginatedDto;
+use XFApi\Dto\AbstractTreeDto;
 
 /**
  * Class UsersDto
@@ -10,7 +10,7 @@ use XFApi\Dto\AbstractPaginatedDto;
  *
  * @property-read UserDto[] $users
  */
-class UsersDto extends AbstractPaginatedDto
+class UsersDto extends AbstractTreeDto
 {
     protected function getItemDtoClass()
     {
