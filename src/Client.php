@@ -306,12 +306,15 @@ class Client
         switch ($statusCode) {
             case 400:
                 $exceptionClass = NoPermissionRequestException::class;
+                $body = $body ?: ['errors' => [['message' => 'No permission']]];
                 break;
             case 403:
                 $exceptionClass = NoPermissionRequestException::class;
+                $body = $body ?: ['errors' => [['message' => 'No permission']]];
                 break;
             case 404:
                 $exceptionClass = NotFoundRequestException::class;
+                $body = $body ?: ['errors' => [['message' => 'Not found']]];
                 break;
             default:
                 $exceptionClass = FallbackRequestException::class;
@@ -320,8 +323,9 @@ class Client
 
         /** @var \XFApi\Exception\RequestException\AbstractRequestException $exception */
         $exception = new $exceptionClass('', $statusCode);
-
-        $exception->setBody($body);
+        if ($body) {
+            $exception->setBody($body);
+        }
 
         throw $exception;
     }
