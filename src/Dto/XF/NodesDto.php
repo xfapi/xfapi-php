@@ -5,20 +5,18 @@ namespace XFApi\Dto\XF;
 use XFApi\Dto\AbstractTreeDto;
 
 /**
- * Class UsersDto
+ * Class NodesDto
  * @package XFApi\Dto\XF
- *
- * @property-read UserDto[] $users
  */
-class UsersDto extends AbstractTreeDto
+class NodesDto extends AbstractTreeDto
 {
     protected function getItemDtoClass()
     {
-        return UserDto::class;
+        return NodeDto::class;
     }
 
     protected function getItemsKey()
     {
-        return 'users';
+        return 'nodes';
     }
 }

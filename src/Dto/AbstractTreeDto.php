@@ -7,7 +7,7 @@ abstract class AbstractTreeDto extends AbstractDto implements \Countable, \Itera
     protected $_treeMap;
     protected $_items;
 
-    public function __construct(array $treeMap, array $items)
+    public function __construct(array $items, array $treeMap)
     {
         $this->_treeMap = $treeMap;
 
@@ -37,7 +37,7 @@ abstract class AbstractTreeDto extends AbstractDto implements \Countable, \Itera
 
     public function __get($name)
     {
-        // TODO: Implement __get() method.
+        return $this->getItems();
     }
 
     public function current()
