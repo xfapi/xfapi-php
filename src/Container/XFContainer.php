@@ -6,6 +6,8 @@ use XFApi\Domain\XF\AuthDomain;
 use XFApi\Domain\XF\IndexDomain;
 use XFApi\Domain\XF\ThreadDomain;
 use XFApi\Domain\XF\PostDomain;
+use XFApi\Domain\XF\NodeDomain;
+use XFApi\Domain\XF\UserDomain;
 
 /**
  * Class XF
@@ -15,6 +17,8 @@ use XFApi\Domain\XF\PostDomain;
  * @property-read ThreadDomain $thread
  * @property-read PostDomain $post
  * @property-read AuthDomain $auth
+ * @property-read NodeDomain $node
+ * @property-read UserDomain $user
  */
 class XFContainer extends AbstractContainer
 {
@@ -23,5 +27,7 @@ class XFContainer extends AbstractContainer
         'thread' => ThreadDomain::class,
         'post' => PostDomain::class,
         'auth' => AuthDomain::class
+        'node' => NodeDomain::class,
+        'user' => UserDomain::class,
     ];
 }
