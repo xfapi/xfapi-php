@@ -19,6 +19,13 @@ class PostDomain extends AbstractDomain
         return $this->getDto(PostDto::class, $post['post']);
     }
 
+    public function getPost($postId)
+    {
+        $uri = $this->getUri(null, ['post_id' => $postId]);
+        $post = $this->get($uri);
+        return $this->getDto(PostDto::class, $post['post']);
+    }
+
     protected function getUri($uri = null, array $params = [])
     {
         $return = 'posts';
