@@ -117,6 +117,24 @@ class Client
         $this->apiKey = $apiKey;
     }
 
+    public function getAuthenticationMethod()
+    {
+        return $this->apiAuthenticationMethod;
+    }
+
+    public function setAuthenticationMethod($method)
+    {
+        if (empty($method)) {
+            return;
+        }
+
+        if (!in_array($method, ['api_key', 'session_cookie'])) {
+            throw new XFApiException('Invalid authentication method ' . $name);
+        }
+
+        $this->apiAuthenticationMethod = $method;
+    }
+
     /**
      * @param $endpoint
      * @param array $params
@@ -206,6 +224,36 @@ class Client
         return $this->request('DELETE', $endpoint, $params, [], $headers);
     }
 
+    protected function getAuthenticationHeaders()
+    {
+        switch ($this->apiAuthenticationMethod) {
+
+            case 'api_key':
+
+                $headers = [
+                    'XF-Api-Key' => $this->getApiKey(),
+                ];
+
+                $userId = $this->getApiUserId();
+                if ($userId) {
+                    $headers['XF-Api-User'] = $userId;
+                }
+
+                break;
+
+            case 'session_cookie':
+
+                $headers = [
+                    'Authorization' => 'Session ' . $this->getApiKey() . ' ' . $_COOKIE['xf_session'],
+                ];
+
+                break;
+
+        }
+
+        return $headers;
+    }
+
     /**
      * @param $method
      * @param $endpoint
@@ -225,17 +273,11 @@ class Client
         array $headers = [],
         $saveTo = null
     ) {
-        $headers = array_merge($headers, [
-            'XF-Api-Key' => $this->getApiKey(),
+        $headers = array_merge($headers, $this->getAuthenticationHeaders(), [
             'User-Agent' => 'xfapi-php/' . self::LIBRARY_VERSION .
                 ' (PHP ' . phpversion() . ')',
             'Accept-Charset' => 'utf-8',
         ]);
-
-        $userId = $this->getApiUserId();
-        if ($userId) {
-            $headers['XF-Api-User'] = $userId;
-        }
 
         if (!isset($headers['Accept'])) {
             $headers['Accept'] = 'application/json';
