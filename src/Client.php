@@ -24,6 +24,7 @@ class Client
 {
     const LIBRARY_VERSION = '1.0.0 Alpha 1';
 
+    protected $apiAuthenticationMethod = 'api_key';
     protected $apiUrl;
     protected $apiKey;
     protected $apiUserId;
@@ -44,11 +45,12 @@ class Client
      * @param $apiKey
      * @param string|null $apiUserId
      */
-    public function __construct($apiUrl, $apiKey, $apiUserId = null)
+    public function __construct($apiUrl, $apiKey, $apiUserId = null, $apiAuthenticationMethod = null)
     {
         $this->setApiUrl($apiUrl);
         $this->setApiKey($apiKey);
         $this->setApiUserId($apiUserId);
+        $this->setAuthenticationMethod($apiAuthenticationMethod);
 
         $this->setHttpClient(new GuzzleClient);
     }
