@@ -228,7 +228,11 @@ class Client
 
     protected function getAuthenticationHeaders()
     {
-        switch ($this->apiAuthenticationMethod) {
+        if ($this->getAuthenticationMethod() == 'session_cookie' && !($cookie = $_COOKIE['xf_session'] ?? '')) {
+            $this->setAuthenticationMethod('api_key');
+        }
+
+        switch ($this->getAuthenticationMethod()) {
 
             case 'api_key':
 
