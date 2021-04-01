@@ -28,6 +28,7 @@ class Client
     protected $apiUrl;
     protected $apiKey;
     protected $apiUserId;
+    protected $cookiePrefix = 'xf_';
     protected $httpClient;
 
     protected $_container = [
@@ -137,6 +138,16 @@ class Client
         $this->apiAuthenticationMethod = $method;
     }
 
+    public function setCookiePrefix($cookiePrefix)
+    {
+        $this->cookiePrefix = $cookiePrefix;
+    }
+
+    public function getSessionCookie()
+    {
+        return $_COOKIE[$this->cookiePrefix . 'session'];
+    }
+
     /**
      * @param $endpoint
      * @param array $params
@@ -228,7 +239,7 @@ class Client
 
     protected function getAuthenticationHeaders()
     {
-        if ($this->getAuthenticationMethod() == 'session_cookie' && !($cookie = $_COOKIE['xf_session'] ?? '')) {
+        if ($this->getAuthenticationMethod() == 'session_cookie' && !$this->getSessionCookie()) {
             $this->setAuthenticationMethod('api_key');
         }
 
@@ -250,7 +261,7 @@ class Client
             case 'session_cookie':
 
                 $headers = [
-                    'Authorization' => 'Session ' . $this->getApiKey() . ' ' . $_COOKIE['xf_session'],
+                    'Authorization' => 'Session ' . $this->getApiKey() . ' ' . $this->getSessionCookie(),
                 ];
 
                 break;
