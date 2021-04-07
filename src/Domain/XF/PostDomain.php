@@ -26,6 +26,17 @@ class PostDomain extends AbstractDomain
         return $this->getDto(PostDto::class, $post['post']);
     }
 
+    public function vote($postId, $voteType)
+    {
+        $voteType = in_array($voteType, ['up', 'down']) ? $voteType : 'up';
+
+        $uri = $this->getUri('vote', ['post_id' => $postId]);
+        $post = $this->post($uri, [], [
+            'type' => $voteType,
+        ]);var_dump($post);exit;
+        return $this->getDto(PostDto::class, $post['post']);
+    }
+
     protected function getUri($uri = null, array $params = [])
     {
         $return = 'posts';
