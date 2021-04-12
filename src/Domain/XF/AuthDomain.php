@@ -9,7 +9,16 @@ class AuthDomain extends AbstractDomain
 {
     protected function getUri($uri = null, array $params = [])
     {
-        return 'auth';
+        $return = 'auth';
+        if (isset($params['user_id'])) {
+            $return .= '/' . $params['user_id'];
+        }
+
+        if (!empty($uri)) {
+            $return .= '/' . $uri;
+        }
+
+        return $return;
     }
 
     /**
@@ -24,6 +33,13 @@ class AuthDomain extends AbstractDomain
     {
         $uri = $this->getUri();
         $user = $this->post($uri, [], ['login' => $login, 'password' => $password, 'limit_ip' => $ip]);
+        return empty($user['user']) ? null : $this->getDto(UserDto::class, $user['user']);
+    }
+
+    public function fromSession($sessionId)
+    {
+        $uri = $this->getUri('from-session');
+        $user = $this->post($uri, [], ['session_id' => $sessionId]);
         return empty($user['user']) ? null : $this->getDto(UserDto::class, $user['user']);
     }
 
