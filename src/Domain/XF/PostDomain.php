@@ -8,12 +8,52 @@ use XFApi\Dto\XF\PostsDto;
 
 class PostDomain extends AbstractDomain
 {
+    public function create($threadId, $message, array $data = [])
+    {
+        $uri = $this->getUri();
+        $post = $this->post($uri, [], array_merge([
+            'thread_id' => $threadId,
+            'message' => $message,
+        ], $data));
+
+        return $this->getDto(PostDto::class, $post['post']);
+    }
+
+    public function getPost($postId)
+    {
+        $uri = $this->getUri(null, ['post_id' => $postId]);
+        $post = $this->get($uri);
+        return $this->getDto(PostDto::class, $post['post']);
+    }
+
+    public function vote($postId, $voteType)
+    {
+        $voteType = in_array($voteType, ['up', 'down']) ? $voteType : 'up';
+
+        $uri = $this->getUri('vote', ['post_id' => $postId]);
+        $this->post($uri, [], [
+            'type' => $voteType,
+        ]);
+
+        return $this->getPost($postId);
+    }
+
     protected function getUri($uri = null, array $params = [])
     {
+        $return = 'posts';
+        if (isset($params['post_id'])) {
+            $return .= '/' . $params['post_id'];
+        }
+
+        if (!empty($uri)) {
+            $return .= '/' . $uri;
+        }
+
+        return $return;
     }
 
     protected function getDtoClass()
     {
-        return ThreadDto::class;
+        return PostDto::class;
     }
 }

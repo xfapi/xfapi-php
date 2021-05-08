@@ -26,7 +26,7 @@ class XFContainer extends AbstractContainer
         'index' => IndexDomain::class,
         'thread' => ThreadDomain::class,
         'post' => PostDomain::class,
-        'auth' => AuthDomain::class
+        'auth' => AuthDomain::class,
         'node' => NodeDomain::class,
         'user' => UserDomain::class,
     ];

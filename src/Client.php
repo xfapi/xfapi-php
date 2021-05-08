@@ -24,9 +24,11 @@ class Client
 {
     const LIBRARY_VERSION = '1.0.0 Alpha 1';
 
+    protected $apiAuthenticationMethod = 'api_key';
     protected $apiUrl;
     protected $apiKey;
     protected $apiUserId;
+    protected $cookiePrefix = 'xf_';
     protected $httpClient;
 
     protected $_container = [
@@ -44,11 +46,12 @@ class Client
      * @param $apiKey
      * @param string|null $apiUserId
      */
-    public function __construct($apiUrl, $apiKey, $apiUserId = null)
+    public function __construct($apiUrl, $apiKey, $apiUserId = null, $apiAuthenticationMethod = null)
     {
         $this->setApiUrl($apiUrl);
         $this->setApiKey($apiKey);
         $this->setApiUserId($apiUserId);
+        $this->setAuthenticationMethod($apiAuthenticationMethod);
 
         $this->setHttpClient(new GuzzleClient);
     }
@@ -115,6 +118,39 @@ class Client
     public function setApiKey($apiKey)
     {
         $this->apiKey = $apiKey;
+    }
+
+    public function getAuthenticationMethod()
+    {
+        return $this->apiAuthenticationMethod;
+    }
+
+    public function setAuthenticationMethod($method)
+    {
+        if (empty($method)) {
+            return;
+        }
+
+        if (!in_array($method, ['api_key', 'session_cookie'])) {
+            throw new XFApiException('Invalid authentication method ' . $name);
+        }
+
+        $this->apiAuthenticationMethod = $method;
+    }
+
+    public function setCookiePrefix($cookiePrefix)
+    {
+        $this->cookiePrefix = $cookiePrefix;
+    }
+
+    public function getSessionCookie()
+    {
+        return $_COOKIE[$this->cookiePrefix . 'session'];
+    }
+
+    public function hasXfSession()
+    {
+        return isset($_COOKIE[$this->cookiePrefix . 'session']) && isset($_COOKIE[$this->cookiePrefix . 'user']);
     }
 
     /**
@@ -206,6 +242,40 @@ class Client
         return $this->request('DELETE', $endpoint, $params, [], $headers);
     }
 
+    protected function getAuthenticationHeaders()
+    {
+        if ($this->getAuthenticationMethod() == 'session_cookie' && !$this->getSessionCookie()) {
+            $this->setAuthenticationMethod('api_key');
+        }
+
+        switch ($this->getAuthenticationMethod()) {
+
+            case 'api_key':
+
+                $headers = [
+                    'XF-Api-Key' => $this->getApiKey(),
+                ];
+
+                $userId = $this->getApiUserId();
+                if ($userId) {
+                    $headers['XF-Api-User'] = $userId;
+                }
+
+                break;
+
+            case 'session_cookie':
+
+                $headers = [
+                    'Authorization' => 'Session ' . $this->getApiKey() . ' ' . $this->getSessionCookie(),
+                ];
+
+                break;
+
+        }
+
+        return $headers;
+    }
+
     /**
      * @param $method
      * @param $endpoint
@@ -225,17 +295,11 @@ class Client
         array $headers = [],
         $saveTo = null
     ) {
-        $headers = array_merge($headers, [
-            'XF-Api-Key' => $this->getApiKey(),
+        $headers = array_merge($headers, $this->getAuthenticationHeaders(), [
             'User-Agent' => 'xfapi-php/' . self::LIBRARY_VERSION .
                 ' (PHP ' . phpversion() . ')',
             'Accept-Charset' => 'utf-8',
         ]);
-
-        $userId = $this->getApiUserId();
-        if ($userId) {
-            $headers['XF-Api-User'] = $userId;
-        }
 
         if (!isset($headers['Accept'])) {
             $headers['Accept'] = 'application/json';
