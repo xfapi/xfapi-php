@@ -63,21 +63,6 @@ class ThreadDomain extends AbstractDomain
         return $this->getPaginatedDto(PostsDto::class, $posts['posts'], $posts['pagination']);
     }
 
-    /**
-     * @param int $threadId
-     * @param int $page
-     *
-     * @return \XFApi\Dto\AbstractPaginatedDto
-     * @throws \XFApi\Exception\XFApiException
-     */
-    public function getThreadFeaturedPosts($threadId)
-    {
-        $uri = $this->getUri('featured-posts', ['thread_id' => $threadId]);
-        $posts = $this->get($uri);
-
-        return $this->getPaginatedDto(PostsDto::class, $posts['posts'], []);
-    }
-
     protected function getUri($uri = null, array $params = [])
     {
         $return = 'threads';
