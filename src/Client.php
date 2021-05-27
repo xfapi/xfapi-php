@@ -4,6 +4,7 @@ namespace XFApi;
 
 use GuzzleHttp\Client as GuzzleClient;
 use XFApi\Container\AbstractContainer;
+use XFApi\Container\Audentio\WpConnectContainer as AudentioWpConnectContainer;
 use XFApi\Container\DBTech\ECommerceContainer as DBTechECommerceContainer;
 use XFApi\Container\XFContainer;
 use XFApi\Container\XFRMContainer;
@@ -34,7 +35,8 @@ class Client
     protected $_container = [
         'xf' => XFContainer::class,
         'xfrm' => XFRMContainer::class,
-        'dbtech_ecommerce' => DBTechECommerceContainer::class
+        'audentio_wpconnect' => AudentioWpConnectContainer::class,
+        'dbtech_ecommerce' => DBTechECommerceContainer::class,
     ];
 
     protected $_containerCache = [];
