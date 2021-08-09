@@ -150,6 +150,11 @@ class Client
         return $_COOKIE[$this->cookiePrefix . 'session'];
     }
 
+    public function getUserCookie()
+    {
+        return $_COOKIE[$this->cookiePrefix . 'user'];
+    }
+
     public function hasXfSession()
     {
         return isset($_COOKIE[$this->cookiePrefix . 'session']) && isset($_COOKIE[$this->cookiePrefix . 'user']);
