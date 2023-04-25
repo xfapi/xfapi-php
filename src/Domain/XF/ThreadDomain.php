@@ -50,6 +50,19 @@ class ThreadDomain extends AbstractDomain
 
     /**
      * @param int $threadId
+     *
+     * @return \XFApi\Dto\AbstractItemDto
+     * @throws \XFApi\Exception\XFApiException
+     */
+    public function getThreadBypassPermissions($threadId)
+    {
+        $uri = $this->getUri(null, ['thread_id' => $threadId]);
+        $thread = $this->get($uri, ['api_bypass_permissions' => 1]);
+        return $this->getDto(ThreadDto::class, $thread['thread']);
+    }
+
+    /**
+     * @param int $threadId
      * @param int $page
      *
      * @return \XFApi\Dto\AbstractPaginatedDto
@@ -61,21 +74,6 @@ class ThreadDomain extends AbstractDomain
         $posts = $this->get($uri, ['page' => $page]);
 
         return $this->getPaginatedDto(PostsDto::class, $posts['posts'], $posts['pagination']);
-    }
-
-    /**
-     * @param int $threadId
-     * @param int $page
-     *
-     * @return \XFApi\Dto\AbstractPaginatedDto
-     * @throws \XFApi\Exception\XFApiException
-     */
-    public function getThreadFeaturedPosts($threadId)
-    {
-        $uri = $this->getUri('featured-posts', ['thread_id' => $threadId]);
-        $posts = $this->get($uri);
-
-        return $this->getPaginatedDto(PostsDto::class, $posts['posts'], []);
     }
 
     protected function getUri($uri = null, array $params = [])

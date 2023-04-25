@@ -36,11 +36,21 @@ class AuthDomain extends AbstractDomain
         return empty($user['user']) ? null : $this->getDto(UserDto::class, $user['user']);
     }
 
-    public function fromSession($sessionId)
+    public function fromSession($rememberCookie, $sessionId)
     {
         $uri = $this->getUri('from-session');
+
+        $user = $this->post($uri, [], ['remember_cookie' => $rememberCookie]);
+        if (!empty($user['user'])) {
+            return $this->getDto(UserDto::class, $user['user']);
+        }
+
         $user = $this->post($uri, [], ['session_id' => $sessionId]);
-        return empty($user['user']) ? null : $this->getDto(UserDto::class, $user['user']);
+        if (!empty($user['user'])) {
+            return $this->getDto(UserDto::class, $user['user']);
+        }
+
+        return null;
     }
 
     protected function getDtoClass()

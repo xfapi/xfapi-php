@@ -25,6 +25,7 @@ abstract class AbstractPaginatedDto extends AbstractDto implements \Countable, \
         $this->setPagination(new PaginationDto($pagination));
     }
 
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->_items);
@@ -64,11 +65,13 @@ abstract class AbstractPaginatedDto extends AbstractDto implements \Countable, \
     }
 
     // ArrayAccess
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return array_key_exists($offset, $this->_items);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (array_key_exists($offset, $this->_items)) {
@@ -78,36 +81,43 @@ abstract class AbstractPaginatedDto extends AbstractDto implements \Countable, \
         return null;
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
     }
 
     // Iterator
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->_items);
     }
 
+    #[\ReturnTypeWillChange]
     public function next()
     {
         return next($this->_items);
     }
 
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->_items);
     }
 
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         $key = key($this->_items);
         return ($key !== null && $key !== false);
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         reset($this->_items);

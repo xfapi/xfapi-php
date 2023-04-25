@@ -8,6 +8,7 @@ use XFApi\Domain\XF\ThreadDomain;
 use XFApi\Domain\XF\PostDomain;
 use XFApi\Domain\XF\NodeDomain;
 use XFApi\Domain\XF\UserDomain;
+use XFApi\Domain\XF\MeDomain;
 
 /**
  * Class XF
@@ -19,6 +20,7 @@ use XFApi\Domain\XF\UserDomain;
  * @property-read AuthDomain $auth
  * @property-read NodeDomain $node
  * @property-read UserDomain $user
+ * @property-read MeDomain $me
  */
 class XFContainer extends AbstractContainer
 {
@@ -29,5 +31,6 @@ class XFContainer extends AbstractContainer
         'auth' => AuthDomain::class,
         'node' => NodeDomain::class,
         'user' => UserDomain::class,
+        'me' => MeDomain::class,
     ];
 }
