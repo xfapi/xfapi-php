@@ -40,14 +40,18 @@ class AuthDomain extends AbstractDomain
     {
         $uri = $this->getUri('from-session');
 
-        $user = $this->post($uri, [], ['remember_cookie' => $rememberCookie]);
-        if (!empty($user['user'])) {
-            return $this->getDto(UserDto::class, $user['user']);
+        if ($rememberCookie) {
+            $user = $this->post($uri, [], ['remember_cookie' => $rememberCookie]);
+            if (!empty($user['user'])) {
+                return $this->getDto(UserDto::class, $user['user']);
+            }
         }
 
-        $user = $this->post($uri, [], ['session_id' => $sessionId]);
-        if (!empty($user['user'])) {
-            return $this->getDto(UserDto::class, $user['user']);
+        if ($sessionId) {
+            $user = $this->post($uri, [], ['session_id' => $sessionId]);
+            if (!empty($user['user'])) {
+                return $this->getDto(UserDto::class, $user['user']);
+            }
         }
 
         return null;

@@ -157,7 +157,7 @@ class Client
 
     public function hasXfSession()
     {
-        return isset($_COOKIE[$this->cookiePrefix . 'session']) && isset($_COOKIE[$this->cookiePrefix . 'user']);
+        return isset($_COOKIE[$this->cookiePrefix . 'session']) || isset($_COOKIE[$this->cookiePrefix . 'user']);
     }
 
     /**
