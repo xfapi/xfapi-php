@@ -30,6 +30,7 @@ class Client
     protected $apiKey;
     protected $apiUserId;
     protected $cookiePrefix = 'xf_';
+    protected $bypassPermissions = false;
     protected $httpClient;
 
     protected $_container = [
@@ -157,7 +158,12 @@ class Client
 
     public function hasXfSession()
     {
-        return isset($_COOKIE[$this->cookiePrefix . 'session']) && isset($_COOKIE[$this->cookiePrefix . 'user']);
+        return isset($_COOKIE[$this->cookiePrefix . 'session']) || isset($_COOKIE[$this->cookiePrefix . 'user']);
+    }
+
+    public function setBypassPermissions($bypassPermissions)
+    {
+        $this->bypassPermissions = $bypassPermissions;
     }
 
     /**
@@ -320,9 +326,13 @@ class Client
         if (strtolower($method) === 'post') {
             $requestOptions['form_params'] = $data;
         }
-    
+
         if (is_string($saveTo)) {
             $requestOptions['stream'] = true;
+        }
+
+        if ($this->bypassPermissions) {
+            $params['api_bypass_permissions'] = 1;
         }
     
         try {
