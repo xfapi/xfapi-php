@@ -50,19 +50,6 @@ class ThreadDomain extends AbstractDomain
 
     /**
      * @param int $threadId
-     *
-     * @return \XFApi\Dto\AbstractItemDto
-     * @throws \XFApi\Exception\XFApiException
-     */
-    public function getThreadBypassPermissions($threadId)
-    {
-        $uri = $this->getUri(null, ['thread_id' => $threadId]);
-        $thread = $this->get($uri, ['api_bypass_permissions' => 1]);
-        return $this->getDto(ThreadDto::class, $thread['thread']);
-    }
-
-    /**
-     * @param int $threadId
      * @param int $page
      *
      * @return \XFApi\Dto\AbstractPaginatedDto
